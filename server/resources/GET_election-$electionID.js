@@ -12,10 +12,10 @@ module.exports = function({electionID}) {
             }
 
             resolve(keystone.format(election, {
-                choices: election.choices.map((a) => {
-                    return keystone.format(a, {
-                        note: election.ongoing ? undefined : a.note,
-                        rank: election.ongoing ? undefined : a.rank
+                choices: election.choices.map((c) => {
+                    return keystone.format(c, {
+                        note: election.ongoing ? undefined : c.note,
+                        rank: election.ongoing ? undefined : c.rank
                     });
                 }),
                 voters: election.consumedKeys.length

@@ -12,7 +12,7 @@ module.exports = function() {
 
             resolve(elections.map((e) => {
                 return keystone.format(e, {
-                    alternatives: undefined
+                    choices: undefined
                 });
             }));
         });

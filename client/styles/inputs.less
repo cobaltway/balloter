@@ -1,0 +1,66 @@
+input[type=text], textarea {
+    display: block;
+    width: 300px;
+    height: 40px;
+    padding-left: 20px;
+    background-color: @text-input;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    outline: none;
+    font-family: 'Source Sans Pro', sans-serif;
+    box-sizing: border-box;
+    margin-bottom: 2em;
+    transition: border-color 0.3s ease-out;
+
+    &:focus {
+        border-color: @header-color;
+    }
+}
+
+textarea {
+    height: 150px;
+    width: 500px;
+}
+
+input[type=button] {
+    background-color: @text-input;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 1em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+
+    &:not([disabled]):not(.important):hover {
+        color: @header-color;
+        border-color: @header-color;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+input[type=button].important {
+    background-color: @header-color;
+    border: 3px double @background;
+    min-width: 200px;
+
+    &:not([disabled]):hover {
+        box-shadow: inset 0 0 200px 200px rgba(255, 255, 255, 0.2);
+    }
+}
+
+input[type=button][disabled] {
+    opacity: 0.5;
+    color: black;
+    cursor: not-allowed;
+}
+
+div.form {
+    padding-left: 3em;
+    padding-right: 3em;
+
+    div:first-child {
+        padding-bottom: 2em;
+    }
+}

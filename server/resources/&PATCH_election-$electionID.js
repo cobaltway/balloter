@@ -3,14 +3,6 @@ const keystone = require('keystone'),
 
 module.exports = function({electionID, ongoing}) {
     return new Promise((resolve, reject) => {
-        try {
-            ongoing = JSON.parse(ongoing);
-        }
-        catch (e) {
-            reject(e);
-            return;
-        }
-
         Election.model.findOne({slug: electionID})
         .exec((err, election) => {
             if (err || !election) {

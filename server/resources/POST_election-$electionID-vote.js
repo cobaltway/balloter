@@ -67,14 +67,6 @@ const createVotes = function({key, choices}) {
 
 module.exports = function({electionID, key, choices}) {
     return new Promise((resolve, reject) => {
-        try {
-            choices = JSON.parse(choices);
-        }
-        catch (e) {
-            reject(e);
-            return;
-        }
-
         Election.model.findOne({slug: electionID})
         .exec((err, election) => {
             if (err || !election) {

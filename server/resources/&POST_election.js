@@ -4,14 +4,6 @@ const keystone = require('keystone'),
 
 module.exports = function({name, description, choices}) {
     return new Promise((resolve, reject) => {
-        try {
-            choices = JSON.parse(choices);
-        }
-        catch (e) {
-            reject(e);
-            return;
-        }
-
         const election = new Election.model({
             name: name,
             description: {md: description}
@@ -40,7 +32,21 @@ module.exports = function({name, description, choices}) {
                     return;
                 }
 
-                resolve(keystone.format(election));
+                election.populate('choices', (err) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    resolve(keystone.format(election, {
+                        choices: election.choices.map((c) => {
+                            return keystone.format(c, {
+                                note: undefined,
+                                rank: undefined
+                            });
+                        })
+                    }));
+                });
             });
         }).catch(reject);
     });
