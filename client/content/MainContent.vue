@@ -1,6 +1,8 @@
 <template>
     <section>
-        <slot></slot>
+        <div>
+            <slot></slot>
+        </div>
     </section>
 </template>
 
@@ -16,5 +18,12 @@
         width: 100vw;
         overflow: auto;
         box-sizing: border-box;
+        text-align: center;
+
+        > div {
+            display: inline-block;
+            max-width: 750px;
+            text-align: left;
+        }
     }
 </style>

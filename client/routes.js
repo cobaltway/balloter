@@ -25,6 +25,11 @@ module.exports = function(route) {
                 path: '/election/:slug',
                 component: require('./pages/ViewElection.vue'),
                 props: true
+            },
+            {
+                path: '/election/:slug/:voteKey',
+                component: require('./pages/ViewElection.vue'),
+                props: true
             }
         ]
     });

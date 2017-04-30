@@ -11,6 +11,30 @@ a {
     text-decoration: none;
 }
 
+.color {
+    color: @header-color;
+}
+
 .error {
     color: @header-color;
+}
+
+.big {
+    font-size: 3em;
+}
+
+@keyframes loader {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loader {
+    display: inline-block;
+    text-align: center;
+    animation: loader 0.75s linear 0s infinite;
+    transform-origin: 50% 54%;
 }

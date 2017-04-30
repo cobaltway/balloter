@@ -32,22 +32,23 @@ module.exports = {
             }
         },
         writeUp({body}) {
-            if (this.slug !== body.slug) {
-                this.$router.push('/edit/' + body.slug);
-            }
-            else {
-                this.slug = body.slug;
+            if (body.slug) {
                 this.name = body.name;
                 this.description = body.description.md;
                 this.choices = body.choices.map((c) => {
                     return {
+                        id: c._id,
                         name: c.name,
-                        description: c.description.md
+                        description: c.description.md,
+                        note: c.note,
+                        rank: c.rank
                     };
                 });
                 this.ongoing = body.ongoing;
                 this.broadcasted = body.broadcasted;
-                this.changed = false;
+            }
+            if (this.afterWrite) {
+                this.afterWrite(body);
             }
         }
     }

@@ -25,5 +25,6 @@
         margin-top: 7px;
         border-top: 3px double @background;
         border-bottom: 3px double @background;
+        text-align: center;
     }
 </style>

@@ -99,4 +99,8 @@ module.exports = {
         padding-left: 20px;
         padding-right: 20px;
     }
+
+    p {
+        margin-bottom: 0;
+    }
 </style>

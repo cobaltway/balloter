@@ -1,14 +1,17 @@
 <template>
     <div>
-        <page-title :title="title">
-            <router-link v-if="name" :to="'/election/' + slug"> ⇒ Voir le vote </router-link>
-        </page-title>
+        <page-title :title="title"></page-title>
 
         <load-or-error :error="error" :loading="loading"></load-or-error>
 
         <div v-if="name || creation" class="form">
+
+            <router-link v-if="slug" :to="'/election/' + slug">
+                <span> ⇒ </span> Aller au vote
+            </router-link>
+
             <div v-if="!creation">
-                <b> Statut : </b>
+                <b> Statut : </b>&nbsp;
                 <election-state :ongoing="ongoing" :broadcasted="broadcasted"></election-state>
             </div>
 
@@ -44,10 +47,10 @@
 
             <div class="actions">
                 <async-button v-if="!broadcasted"
-                    :disabled="!canSave" value="✓ Sauvegarder"
+                    :disabled="!name || !this.changed" value="✓ Sauvegarder"
                     :request="saveOrUpdate()" @done="writeUp">
                 </async-button>
-                <async-button v-if="slug && ongoing && !canSave"
+                <async-button v-if="canBroadcast"
                     value="🔗 Diffuser sur discord"
                     :request="broadcast()" @done="broadcasted = true">
                 </async-button>
@@ -86,11 +89,19 @@
                     return c.name.slice();
                 });
             },
-            canSave() {
-                return this.actualChoices.length > 1 && this.name && this.changed;
+            canBroadcast() {
+                return this.slug && this.ongoing && this.actualChoices.length > 1 && this.name;
             }
         },
         methods: {
+            afterWrite(body) {
+                if (this.slug !== body.slug) {
+                    this.$router.push('/edit/' + body.slug);
+                }
+                else {
+                    this.changed = false;
+                }
+            },
             saveOrUpdate() {
                 return () => {
                     if (this.slug) {
@@ -144,10 +155,21 @@
 </script>
 
 <style lang="less" scoped>
+    @import "../styles/colors.less";
+
+    div.form div:first-child, div.form div:nth-child(2) {
+        padding-bottom: 1.8em;
+    }
+
     a {
+        display: inline-block;
         font-size: 1em;
-        margin-left: 2em;
-        font-weight: normal;
+        padding-bottom: 1.5em;
+        font-weight: bold;
+
+        span {
+            color: @header-color;
+        }
 
         &:hover {
             text-decoration: underline;

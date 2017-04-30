@@ -22,7 +22,7 @@ textarea {
     width: 500px;
 }
 
-input[type=button] {
+input[type=button], button {
     background-color: @text-input;
     border: 1px solid rgba(0, 0, 0, 0.3);
     padding: 1em;
@@ -40,7 +40,7 @@ input[type=button] {
     }
 }
 
-input[type=button].important {
+input[type=button].important, button.important {
     background-color: @header-color;
     border: 3px double @background;
     min-width: 200px;
@@ -50,7 +50,7 @@ input[type=button].important {
     }
 }
 
-input[type=button][disabled] {
+input[type=button][disabled], button[disabled] {
     opacity: 0.5;
     color: black;
     cursor: not-allowed;
@@ -59,8 +59,4 @@ input[type=button][disabled] {
 div.form {
     padding-left: 3em;
     padding-right: 3em;
-
-    div:first-child {
-        padding-bottom: 2em;
-    }
 }

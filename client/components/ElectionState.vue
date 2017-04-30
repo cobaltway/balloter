@@ -17,6 +17,7 @@
         padding: 0.1em 0.4em;
         border-radius: 5px;
         box-sizing: border-box;
+        font-size: 1em !important;
     }
 
     span.not-broadcasted {

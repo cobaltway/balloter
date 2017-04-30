@@ -1,15 +1,13 @@
 <template>
     <label :class="{ disabled }">
-        <input type="button"
-            @click="doRequest"
-            :disabled="disabled"
-            :value="value"
-            class="important"/>
-        <div v-if="loading">
-            Loading...
-        </div>
-        <div v-else-if="error">
-            {{ error }}
+        <button @click="doRequest" :disabled="disabled" class="important">
+            {{ value }}
+            <div v-if="loading" class="loader">
+                😏
+            </div>
+        </button>
+        <div v-else-if="error" class="error">
+            ⚠ {{ error.body || error }}
         </div>
     </label>
 </template>
