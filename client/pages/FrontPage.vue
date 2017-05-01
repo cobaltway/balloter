@@ -33,7 +33,7 @@
 module.exports = {
     data: function() {
         return {
-            loading: null,
+            loading: true,
             elections: null,
             error: null,
             terminated: true,
@@ -41,14 +41,9 @@ module.exports = {
             notBroadcasted: true
         };
     },
-    created() {
-        this.fetch();
-    },
-    watch: {
-        '$route': 'fetch'
-    },
+    mixins: [require('../mixins/fetch.js')],
     methods: {
-        fetch() {
+        fetchFunc() {
             this.loading = true;
             this.$http.get('/api/election/').then(({body}) => {
                 this.elections = body;
@@ -98,9 +93,5 @@ module.exports = {
     .elections {
         padding-left: 20px;
         padding-right: 20px;
-    }
-
-    p {
-        margin-bottom: 0;
     }
 </style>

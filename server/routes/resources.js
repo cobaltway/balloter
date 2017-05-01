@@ -1,7 +1,7 @@
 const fs = require('fs'),
     path = require('path');
 
-const loadResource = function({app, handler, authNeeded, method, httpPath, name}) {
+const loadResource = function({app, handler, authNeeded, method, httpPath}) {
     app[method]('/api/' + httpPath, (req, res, next) => {
         if (!req.user && authNeeded) {
             res.status(403).send();

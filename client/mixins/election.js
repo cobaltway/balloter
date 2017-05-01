@@ -1,25 +1,20 @@
 module.exports = {
     props: ['slug'],
+    mixins: [require('./fetch.js')],
     data: function() {
         return {
             name: '',
             description: '',
             choices: [],
             error: null,
-            loading: null,
+            loading: true,
             changed: false,
             ongoing: true,
             broadcasted: false
         };
     },
-    created() {
-        this.fetch();
-    },
-    watch: {
-        '$route': 'fetch'
-    },
     methods: {
-        fetch() {
+        fetchFunc() {
             if (this.slug) {
                 this.loading = true;
                 this.$http.get('/api/election/' + this.slug)

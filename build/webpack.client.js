@@ -3,10 +3,11 @@ const path = require('path'),
 
 module.exports = {
     watch: true,
-    entry: path.join(__dirname, './client/index.js'),
+    target: 'web',
+    entry: path.join(__dirname, '../client/index.js'),
     output: {
         filename: 'bundle.js',
-        path: path.join(__dirname, './server/public')
+        path: path.join(__dirname, '../server/public')
     },
     module: {
         rules: [
@@ -28,7 +29,8 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, './client/index.ejs'),
+            filename: '../client/template.html',
+            template: path.join(__dirname, '../client/template.html'),
             inject: false
         })
     ]

@@ -1,6 +1,6 @@
 <template>
     <router-link to="/">
-        <img src="assets/rr_logo.png" alt="Résistance et Révolution"/>
+        <img src="/assets/rr_logo.png" alt="Résistance et Révolution"/>
         <h1>
             — Espace de vote par jugement majoritaire 😏 —
         </h1>

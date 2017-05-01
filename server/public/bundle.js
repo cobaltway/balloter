@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -229,7 +229,7 @@ function toComment(sourceMap) {
   return '/*# ' + data + ' */';
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32).Buffer))
 
 /***/ }),
 /* 2 */
@@ -251,7 +251,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(32)
+var listToStyles = __webpack_require__(78)
 
 /*
 type StyleObject = {
@@ -454,6 +454,75 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(72)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(20),
+  /* template */
+  __webpack_require__(58),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-65c45f33",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(70)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(21),
+  /* template */
+  __webpack_require__(56),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-2de0f2cc",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(66)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(22),
+  /* template */
+  __webpack_require__(52),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-09493d78",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10077,10 +10146,120 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(14)))
 
 /***/ }),
-/* 4 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (note) {
+    switch (note) {
+        case 0:
+            return 'À rejeter';
+        case 1:
+            return 'Insuffisant';
+        case 2:
+            return 'Passable';
+        case 3:
+            return 'Assez bien';
+        case 4:
+            return 'Bien';
+        case 5:
+            return 'Très bien';
+        case 6:
+            return 'Excellent';
+    }
+};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+    props: ['slug'],
+    mixins: [__webpack_require__(9)],
+    data: function data() {
+        return {
+            name: '',
+            description: '',
+            choices: [],
+            error: null,
+            loading: true,
+            changed: false,
+            ongoing: true,
+            broadcasted: false
+        };
+    },
+    methods: {
+        fetchFunc: function fetchFunc() {
+            var _this = this;
+
+            if (this.slug) {
+                this.loading = true;
+                this.$http.get('/api/election/' + this.slug).then(this.writeUp).catch(function (err) {
+                    _this.error = err;
+                }).then(function () {
+                    _this.loading = false;
+                });
+            }
+        },
+        writeUp: function writeUp(_ref) {
+            var body = _ref.body;
+
+            if (body.slug) {
+                this.name = body.name;
+                this.description = body.description.md;
+                this.choices = body.choices.map(function (c) {
+                    return {
+                        id: c._id,
+                        name: c.name,
+                        description: c.description.md,
+                        note: c.note,
+                        rank: c.rank
+                    };
+                });
+                this.ongoing = body.ongoing;
+                this.broadcasted = body.broadcasted;
+            }
+            if (this.afterWrite) {
+                this.afterWrite(body);
+            }
+        }
+    }
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+    created: function created() {
+        this.fetch();
+    },
+
+    watch: {
+        '$route': 'fetch'
+    },
+    methods: {
+        fetch: function fetch() {
+            if (typeof window !== 'undefined') {
+                this.fetchFunc();
+            }
+        }
+    }
+};
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -10270,7 +10449,76 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 5 */
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(67)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(19),
+  /* template */
+  __webpack_require__(53),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-179631c9",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(69)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(26),
+  /* template */
+  __webpack_require__(55),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-26796479",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(77)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(28),
+  /* template */
+  __webpack_require__(64),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-e2116e06",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports) {
 
 var g;
@@ -10297,17 +10545,17 @@ module.exports = g;
 
 
 /***/ }),
-/* 6 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _vue = __webpack_require__(3);
+var _vue = __webpack_require__(6);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(28);
+var _vueRouter = __webpack_require__(65);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
@@ -10315,50 +10563,42 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vueRouter2.default);
 
-module.exports = function (route) {
-    var router = new _vueRouter2.default({
-        // mode: 'history',
-        routes: [{
-            path: '/',
-            component: __webpack_require__(22)
-        }, {
-            path: '/create',
-            component: __webpack_require__(59),
-            props: { creation: true }
-        }, {
-            path: '/edit/:slug',
-            component: __webpack_require__(59),
-            props: true
-        }, {
-            path: '/election/:slug',
-            component: __webpack_require__(71),
-            props: true
-        }, {
-            path: '/election/:slug/:voteKey',
-            component: __webpack_require__(71),
-            props: true
-        }]
-    });
-
-    if (route) {
-        router.push(route);
-    }
-
-    return router;
-};
+module.exports = new _vueRouter2.default({
+    mode: 'history',
+    routes: [{
+        path: '/',
+        component: __webpack_require__(51)
+    }, {
+        path: '/create',
+        component: __webpack_require__(12),
+        props: { creation: true }
+    }, {
+        path: '/edit/:slug',
+        component: __webpack_require__(12),
+        props: true
+    }, {
+        path: '/election/:slug',
+        component: __webpack_require__(13),
+        props: true
+    }, {
+        path: '/election/:slug/:voteKey',
+        component: __webpack_require__(13),
+        props: true
+    }]
+});
 
 /***/ }),
-/* 7 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function injectStyle (ssrContext) {
-  __webpack_require__(31)
+  __webpack_require__(76)
 }
 var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(26),
+  __webpack_require__(62),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -10371,17 +10611,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 8 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function injectStyle (ssrContext) {
-  __webpack_require__(29)
+  __webpack_require__(73)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(10),
+  __webpack_require__(25),
   /* template */
-  __webpack_require__(24),
+  __webpack_require__(59),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -10394,7 +10634,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 9 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11484,7 +11724,7 @@ var xhrClient = function (request) {
 
 var nodeClient = function (request) {
 
-    var client = __webpack_require__(33);
+    var client = __webpack_require__(79);
 
     return new PromiseObj(function (resolve) {
 
@@ -11948,7 +12188,147 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 
 /***/ }),
-/* 10 */
+/* 19 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['value', 'request', 'disabled'],
+    data: function () {
+        return {
+            loading: null,
+            error: null
+        };
+    },
+    methods: {
+        doRequest() {
+            this.loading = true;
+            this.request().then(data => {
+                this.$emit('done', data);
+            }).catch(err => {
+                console.log(err);
+                this.error = err;
+            }).then(() => {
+                this.loading = false;
+            });
+        }
+    }
+};
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['ongoing', 'broadcasted']
+};
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['error', 'loading']
+};
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['title']
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['slug', 'name', 'ongoing', 'broadcasted', 'description'],
+    components: {
+        ElectionState: __webpack_require__(3)
+    }
+};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['value'],
+    data: function () {
+        return {
+            values: new Array(7)
+        };
+    },
+    methods: {
+        verbal: __webpack_require__(7)
+    }
+};
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -11961,13 +12341,171 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = {
     components: {
-        Logo: __webpack_require__(20),
-        TopMenu: __webpack_require__(21)
+        Logo: __webpack_require__(49),
+        TopMenu: __webpack_require__(50)
     }
 };
 
 /***/ }),
-/* 11 */
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['creation'],
+    components: {
+        PageTitle: __webpack_require__(5),
+        AsyncButton: __webpack_require__(11),
+        LoadOrError: __webpack_require__(4),
+        ElectionState: __webpack_require__(3)
+    },
+    mixins: [__webpack_require__(8)],
+    computed: {
+        title() {
+            if (this.slug) {
+                return 'Editer une élection';
+            }
+            return 'Créer une élection';
+        },
+        actualChoices() {
+            return this.choices.filter(c => {
+                return c.name.slice();
+            });
+        },
+        canBroadcast() {
+            return this.slug && this.ongoing && this.actualChoices.length > 1 && this.name;
+        }
+    },
+    methods: {
+        afterWrite(body) {
+            if (this.slug !== body.slug) {
+                this.$router.push('/edit/' + body.slug);
+            } else {
+                this.changed = false;
+            }
+        },
+        saveOrUpdate() {
+            return () => {
+                if (this.slug) {
+                    return this.update();
+                }
+                return this.save();
+            };
+        },
+        save() {
+            return this.$http.post('/api/election/', {
+                name: this.name,
+                description: this.description,
+                choices: this.choices.filter(c => {
+                    return c.name.slice();
+                })
+            });
+        },
+        update() {
+            return this.$http.put('/api/election/' + this.slug, {
+                name: this.name,
+                description: this.description,
+                choices: this.actualChoices
+            });
+        },
+        broadcast() {
+            return () => this.$http.post('/api/election/' + this.slug, {
+                role: 'MEMBRE'
+            });
+        },
+        close() {
+            return () => this.$http.patch('/api/election/' + this.slug, {
+                ongoing: false
+            });
+        },
+        deleteElection() {
+            return () => this.$http.delete('/api/election/' + this.slug);
+        },
+        addChoice() {
+            this.changed = true;
+            this.choices.push({
+                name: '',
+                description: ''
+            });
+        },
+        deleteChoice(index) {
+            this.changed = true;
+            this.choices.splice(index, 1);
+        }
+    }
+};
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //
@@ -12005,7 +12543,7 @@ module.exports = {
 module.exports = {
     data: function () {
         return {
-            loading: null,
+            loading: true,
             elections: null,
             error: null,
             terminated: true,
@@ -12013,14 +12551,9 @@ module.exports = {
             notBroadcasted: true
         };
     },
-    created() {
-        this.fetch();
-    },
-    watch: {
-        '$route': 'fetch'
-    },
+    mixins: [__webpack_require__(9)],
     methods: {
-        fetch() {
+        fetchFunc() {
             this.loading = true;
             this.$http.get('/api/election/').then(({ body }) => {
                 this.elections = body;
@@ -12035,24 +12568,128 @@ module.exports = {
         }
     },
     components: {
-        PageTitle: __webpack_require__(40),
-        SmallElection: __webpack_require__(45),
-        LoadOrError: __webpack_require__(49)
+        PageTitle: __webpack_require__(5),
+        SmallElection: __webpack_require__(47),
+        LoadOrError: __webpack_require__(4)
     }
 };
 
 /***/ }),
-/* 12 */
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+const shuffle = __webpack_require__(30);
+
+module.exports = {
+    props: ['voteKey'],
+    data() {
+        return {
+            voted: false,
+            voters: null
+        };
+    },
+    mixins: [__webpack_require__(8)],
+    components: {
+        PageTitle: __webpack_require__(5),
+        AsyncButton: __webpack_require__(11),
+        LoadOrError: __webpack_require__(4),
+        ElectionState: __webpack_require__(3),
+        VoteInput: __webpack_require__(48)
+    },
+    computed: {
+        canVote() {
+            return this.choices.filter(c => c.note !== null).length === this.choices.length;
+        }
+    },
+    methods: {
+        afterWrite(body) {
+            this.voters = body.voters;
+            if (this.ongoing) {
+                this.choices = shuffle(this.choices);
+            } else {
+                this.choices = this.choices.sort((c1, c2) => c1.rank - c2.rank);
+            }
+        },
+        vote() {
+            return () => this.$http.post('/api/election/' + this.slug + '/vote', {
+                key: this.voteKey,
+                choices: this.choices.map(c => {
+                    return {
+                        id: c.id,
+                        note: c.note
+                    };
+                })
+            });
+        },
+        verbal: __webpack_require__(7),
+        cardinal(position) {
+            if (position === 0) {
+                return 'er';
+            }
+            return 'ème';
+        }
+    }
+};
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _vue = __webpack_require__(3);
+var _vue = __webpack_require__(6);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueResource = __webpack_require__(9);
+var _vueResource = __webpack_require__(18);
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
 
@@ -12060,22 +12697,61 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vueResource2.default);
 
+var router = __webpack_require__(15);
 var app = new _vue2.default({
     render: function render(createElement) {
-        return createElement('div', { domProps: { id: '#app' } }, [createElement('main-header'), createElement('main-content', [createElement('router-view')])]);
+        return createElement('div', { domProps: { id: 'app' } }, [createElement('main-header'), createElement('main-content', [createElement('router-view')])]);
     },
 
     components: {
-        MainHeader: __webpack_require__(8),
-        MainContent: __webpack_require__(7)
+        MainHeader: __webpack_require__(17),
+        MainContent: __webpack_require__(16)
     },
-    router: __webpack_require__(6)()
+    router: router
 });
 
-app.$mount('#app');
+if (typeof window !== 'undefined') {
+    app.$mount('#app');
+}
+
+module.exports = function (_ref) {
+    var url = _ref.url;
+
+    return new Promise(function (resolve, reject) {
+        router.push(url);
+        router.onReady(function () {
+            resolve(app);
+        }, reject);
+    }).catch(function (e) {
+        console.log(e);
+    });
+};
 
 /***/ }),
-/* 13 */
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (array) {
+    var currentIndex = array.length,
+        temporaryValue = void 0,
+        randomIndex = void 0;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+};
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12196,7 +12872,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 14 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12210,9 +12886,9 @@ function fromByteArray (uint8) {
 
 
 
-var base64 = __webpack_require__(13)
-var ieee754 = __webpack_require__(18)
-var isArray = __webpack_require__(19)
+var base64 = __webpack_require__(31)
+var ieee754 = __webpack_require__(45)
+var isArray = __webpack_require__(46)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -13990,10 +14666,108 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ }),
-/* 15 */
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "h1[data-v-09493d78]{left:0;position:absolute;box-sizing:border-box;width:100%;padding-top:.3em;padding-bottom:.3em;margin-bottom:1.5em;border-bottom:1px solid rgba(0,0,0,.2);border-top:1px solid rgba(0,0,0,.2);text-align:center}h1 span[data-v-09493d78]{font-size:.6em;font-weight:400}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".disabled[data-v-179631c9]{color:red}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "div.new-election[data-v-186e666e]{text-align:center;margin-bottom:2.5em}div.new-election a[data-v-186e666e]{padding:.3em .5em;display:inline-block;background-color:#b41e1e;border:3px double #f5f5f5;font-size:1.5em;border-radius:10px;transition:box-shadow .3s ease-out}div.new-election a[data-v-186e666e]:hover{box-shadow:inset 0 0 200px 200px rgba(0,0,0,.2)}.elections[data-v-186e666e]{padding-left:20px;padding-right:20px}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "div.form div[data-v-26796479]:first-child,div.form div[data-v-26796479]:nth-child(2){padding-bottom:1.8em}a[data-v-26796479]{display:inline-block;font-size:1em;padding-bottom:1.5em;font-weight:700}a span[data-v-26796479]{color:#b41e1e}a[data-v-26796479]:hover{text-decoration:underline}div.choice[data-v-26796479]{border-bottom:1px dashed rgba(0,0,0,.2);margin-bottom:1em}div.actions[data-v-26796479]{margin-top:2em;margin-bottom:2em}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".l-e-container[data-v-2de0f2cc]{text-align:center;padding-top:100px}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "a[data-v-3f17a97b]{display:inline-block;font-size:1.3em;font-weight:700;margin-top:.2em;margin-bottom:.2em;transition:opacity .3s ease-out}a[data-v-3f17a97b]:hover{opacity:.6}a[data-v-3f17a97b]:nth-child(2){color:#b41e1e;font-size:1em;font-weight:400}header[data-v-3f17a97b]{border-bottom:1px double #f5f5f5;padding-left:40px}article[data-v-3f17a97b]{background-color:#e6e6e6;border-radius:10px;padding-bottom:.5em;margin-bottom:1em}div.description[data-v-3f17a97b]{padding-left:40px;max-height:85px;overflow:auto}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "span[data-v-65c45f33]{padding:.1em .4em;border-radius:5px;box-sizing:border-box;font-size:1em!important}span.not-broadcasted[data-v-65c45f33]{border:1px dashed #960a0a}span.ongoing[data-v-65c45f33]{background-color:#32b432}span.terminated[data-v-65c45f33]{background-color:#969696}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -14007,7 +14781,21 @@ exports.push([module.i, "header[data-v-6932d524]{position:fixed;background-color
 
 
 /***/ }),
-/* 16 */
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "b[data-v-72ccd3bb]{margin-right:1em}label[data-v-72ccd3bb]{display:inline-block;position:relative;cursor:pointer;transition:all .3s ease-out;text-align:center;margin-left:.3em;margin-right:.3em;margin-bottom:.5em}label:hover span[data-v-72ccd3bb]{color:#b41e1e}span[data-v-72ccd3bb]{width:100%;display:inline-block;border:1px solid transparent;border-radius:5px;transition:all .3s ease-out;box-sizing:border-box;font-size:.9em}input[type=radio][data-v-72ccd3bb]{visibility:hidden;margin:0;width:0}input[type=radio]:checked+span[data-v-72ccd3bb]{color:#b41e1e;border-color:#b41e1e}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -14021,7 +14809,7 @@ exports.push([module.i, "a[data-v-7ca58f29]{padding-left:20px}img[data-v-7ca58f2
 
 
 /***/ }),
-/* 17 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -14035,7 +14823,21 @@ exports.push([module.i, "body{font-family:Source Sans Pro,sans-serif;margin:0;ba
 
 
 /***/ }),
-/* 18 */
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "p[data-v-e2116e06]{background-color:#e6e6e6;border:3px double #f5f5f5;border-radius:10px;min-height:120px;padding:1em;box-sizing:border-box;min-width:500px}.voters[data-v-e2116e06]{font-size:1.2em}.choice[data-v-e2116e06],.voters[data-v-e2116e06]{text-align:center;border-bottom:1px dashed rgba(0,0,0,.2);padding-bottom:1em;margin-bottom:1em}.choice h5[data-v-e2116e06]{font-size:1.2em;margin-top:.1em;margin-bottom:.1em}.choice p[data-v-e2116e06]{min-height:60px}.choice span[data-v-e2116e06]{font-size:1.2em}.choice span.result[data-v-e2116e06]{font-size:1.1em;line-height:.8}.choice span.result sup[data-v-e2116e06]{font-size:.7em;margin-left:-2px}.actions[data-v-e2116e06]{text-align:center}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -14125,7 +14927,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 19 */
+/* 46 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -14136,17 +14938,63 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 20 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function injectStyle (ssrContext) {
-  __webpack_require__(30)
+  __webpack_require__(71)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(23),
+  /* template */
+  __webpack_require__(57),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-3f17a97b",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(74)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(24),
+  /* template */
+  __webpack_require__(60),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-72ccd3bb",
+  /* moduleIdentifier (server only) */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function injectStyle (ssrContext) {
+  __webpack_require__(75)
 }
 var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(25),
+  __webpack_require__(61),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -14159,14 +15007,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 21 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(27),
+  __webpack_require__(63),
   /* styles */
   null,
   /* scopeId */
@@ -14179,17 +15027,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 22 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function injectStyle (ssrContext) {
-  __webpack_require__(35)
+  __webpack_require__(68)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(11),
+  __webpack_require__(27),
   /* template */
-  __webpack_require__(23),
+  __webpack_require__(54),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -14202,7 +15050,37 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 23 */
+/* 52 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (_vm.title) ? _c('h1', [_vm._v("\n    " + _vm._s(_vm.title) + "\n    "), _vm._t("default")], 2) : _vm._e()
+},staticRenderFns: []}
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    class: {
+      disabled: _vm.disabled
+    }
+  }, [_c('button', {
+    staticClass: "important",
+    attrs: {
+      "disabled": _vm.disabled
+    },
+    on: {
+      "click": _vm.doRequest
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.value) + "\n        "), (_vm.loading) ? _c('div', {
+    staticClass: "loader"
+  }, [_vm._v("\n            😏\n        ")]) : _vm._e()])])
+},staticRenderFns: []}
+
+/***/ }),
+/* 54 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -14322,7 +15200,232 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 24 */
+/* 55 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('page-title', {
+    attrs: {
+      "title": _vm.title
+    }
+  }), _vm._v(" "), _c('load-or-error', {
+    attrs: {
+      "error": _vm.error,
+      "loading": _vm.loading
+    }
+  }), _vm._v(" "), (_vm.name || _vm.creation) ? _c('div', {
+    staticClass: "form"
+  }, [(_vm.slug) ? _c('router-link', {
+    attrs: {
+      "to": '/election/' + _vm.slug
+    }
+  }, [_c('span', [_vm._v(" ⇒ ")]), _vm._v(" Aller au vote\n        ")]) : _vm._e(), _vm._v(" "), (!_vm.creation) ? _c('div', [_c('b', [_vm._v(" Statut : ")]), _vm._v(" \n            "), _c('election-state', {
+    attrs: {
+      "ongoing": _vm.ongoing,
+      "broadcasted": _vm.broadcasted
+    }
+  })], 1) : _vm._e(), _vm._v(" "), (_vm.broadcasted) ? _c('div', {
+    staticClass: "error"
+  }, [_vm._v(" ℹ Vous ne pouvez pas éditer une élection qui a été diffusée. ")]) : _c('div', [_c('label', [_vm._v("\n                Nom de l'élection\n                "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.name),
+      expression: "name"
+    }],
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.name)
+    },
+    on: {
+      "input": [function($event) {
+        if ($event.target.composing) { return; }
+        _vm.name = $event.target.value
+      }, function($event) {
+        _vm.changed = true
+      }]
+    }
+  })]), _vm._v(" "), _c('label', [_vm._v("\n                Description "), _c('em', [_vm._v(" (markdown autorisé) ")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.description),
+      expression: "description"
+    }],
+    domProps: {
+      "value": (_vm.description)
+    },
+    on: {
+      "input": [function($event) {
+        if ($event.target.composing) { return; }
+        _vm.description = $event.target.value
+      }, function($event) {
+        _vm.changed = true
+      }]
+    }
+  })]), _vm._v(" "), _c('h3', [_vm._v(" Choix ")]), _vm._v(" "), _vm._l((_vm.choices), function(choice, index) {
+    return _c('div', {
+      staticClass: "choice"
+    }, [_c('h4', [_vm._v("\n                    " + _vm._s(index + 1) + ".\n                    "), _c('input', {
+      attrs: {
+        "type": "button",
+        "value": "✘ Supprimer ce choix"
+      },
+      on: {
+        "click": function($event) {
+          _vm.deleteChoice(index)
+        }
+      }
+    })]), _vm._v(" "), _c('label', [_vm._v("\n                    Nom du choix\n                    "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (choice.name),
+        expression: "choice.name"
+      }],
+      attrs: {
+        "type": "text"
+      },
+      domProps: {
+        "value": (choice.name)
+      },
+      on: {
+        "input": [function($event) {
+          if ($event.target.composing) { return; }
+          choice.name = $event.target.value
+        }, function($event) {
+          _vm.changed = true
+        }]
+      }
+    })]), _vm._v(" "), _c('label', [_vm._v("\n                    Description "), _c('em', [_vm._v(" (markdown autorisé) ")]), _vm._v(" "), _c('textarea', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (choice.description),
+        expression: "choice.description"
+      }],
+      domProps: {
+        "value": (choice.description)
+      },
+      on: {
+        "input": [function($event) {
+          if ($event.target.composing) { return; }
+          choice.description = $event.target.value
+        }, function($event) {
+          _vm.changed = true
+        }]
+      }
+    })])])
+  }), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "button",
+      "value": "✚ Ajouter un choix"
+    },
+    on: {
+      "click": _vm.addChoice
+    }
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "actions"
+  }, [(!_vm.broadcasted) ? _c('async-button', {
+    attrs: {
+      "disabled": !_vm.name || !this.changed,
+      "value": "✓ Sauvegarder",
+      "request": _vm.saveOrUpdate()
+    },
+    on: {
+      "done": _vm.writeUp
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.canBroadcast) ? _c('async-button', {
+    attrs: {
+      "value": "🔗 Diffuser sur discord",
+      "request": _vm.broadcast()
+    },
+    on: {
+      "done": function($event) {
+        _vm.broadcasted = true
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.slug && _vm.ongoing && _vm.broadcasted) ? _c('async-button', {
+    attrs: {
+      "value": "🔒 Clore le vote",
+      "request": _vm.close()
+    },
+    on: {
+      "done": function($event) {
+        _vm.ongoing = false
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.slug) ? _c('async-button', {
+    attrs: {
+      "value": "✘ Supprimer l'élection",
+      "request": _vm.deleteElection()
+    },
+    on: {
+      "done": function($event) {
+        _vm.$router.push('/')
+      }
+    }
+  }) : _vm._e()], 1)], 1) : _vm._e()], 1)
+},staticRenderFns: []}
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "l-e-container"
+  }, [(_vm.loading) ? _c('div', {
+    staticClass: "loader big"
+  }, [_vm._v(" 😏 ")]) : (_vm.error) ? _c('div', {
+    staticClass: "error"
+  }, [_vm._v("\n        " + _vm._s(_vm.error.body || _vm.error) + "\n    ")]) : _vm._e()])
+},staticRenderFns: []}
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('article', [_c('header', [_c('router-link', {
+    attrs: {
+      "to": '/election/' + _vm.slug
+    }
+  }, [_vm._v(" " + _vm._s(_vm.name) + " ")]), _vm._v("  \n        ("), _c('router-link', {
+    attrs: {
+      "to": '/edit/' + _vm.slug
+    }
+  }, [_vm._v(" ✎ Editer ")]), _vm._v(")  \n        "), _c('election-state', {
+    attrs: {
+      "ongoing": _vm.ongoing,
+      "broadcasted": _vm.broadcasted
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "description",
+    domProps: {
+      "innerHTML": _vm._s(_vm.description.html)
+    }
+  })])
+},staticRenderFns: []}
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (!_vm.broadcasted) ? _c('span', {
+    staticClass: "not-broadcasted"
+  }, [_vm._v(" Pas encore ouverte ")]) : (_vm.ongoing) ? _c('span', {
+    staticClass: "ongoing"
+  }, [_vm._v(" En cours ")]) : _c('span', {
+    staticClass: "terminated"
+  }, [_vm._v(" Terminée ")])
+},staticRenderFns: []}
+
+/***/ }),
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -14330,7 +15433,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 25 */
+/* 60 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', _vm._l((_vm.values), function(_, value) {
+    return _c('label', [_c('input', {
+      attrs: {
+        "type": "radio",
+        "name": _vm._uid
+      },
+      on: {
+        "change": function($event) {
+          _vm.$emit('input', value)
+        }
+      }
+    }), _vm._v(" "), _c('span', [_vm._v(" " + _vm._s(_vm.verbal(value)) + " ")])])
+  }))
+},staticRenderFns: []}
+
+/***/ }),
+/* 61 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -14340,14 +15463,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('img', {
     attrs: {
-      "src": "assets/rr_logo.png",
+      "src": "/assets/rr_logo.png",
       "alt": "Résistance et Révolution"
     }
   }), _vm._v(" "), _c('h1', [_vm._v("\n        — Espace de vote par jugement majoritaire 😏 —\n    ")])])
 },staticRenderFns: []}
 
 /***/ }),
-/* 26 */
+/* 62 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -14355,7 +15478,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 27 */
+/* 63 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -14363,7 +15486,76 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 28 */
+/* 64 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('page-title', {
+    attrs: {
+      "title": _vm.name
+    }
+  }, [_c('span', {
+    staticStyle: {
+      "vertical-align": "middle"
+    }
+  }, [_vm._v("\n              "), _c('election-state', {
+    attrs: {
+      "ongoing": _vm.ongoing,
+      "broadcasted": _vm.broadcasted
+    }
+  }), _vm._v("\n             \n            "), _c('router-link', {
+    attrs: {
+      "to": '/edit/' + _vm.slug
+    }
+  }, [_vm._v("\n                ("), _c('span', {
+    staticClass: "color"
+  }, [_vm._v("✎ Editer")]), _vm._v(")\n            ")])], 1)]), _vm._v(" "), _c('load-or-error', {
+    attrs: {
+      "error": _vm.error,
+      "loading": _vm.loading
+    }
+  }), _vm._v(" "), (_vm.name) ? _c('div', {
+    staticClass: "form"
+  }, [_c('p', {
+    staticClass: "main"
+  }, [_vm._v(" " + _vm._s(_vm.description) + " ")]), _vm._v(" "), (_vm.voters) ? _c('div', {
+    staticClass: "voters"
+  }, [_c('span', {
+    staticClass: "color"
+  }, [_vm._v(" " + _vm._s(_vm.voters) + " ")]), _vm._v(" votant.e.s\n        ")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.choices), function(choice, index) {
+    return _c('div', {
+      staticClass: "choice"
+    }, [_c('h5', [_vm._v(" " + _vm._s(choice.name) + " ")]), _vm._v(" "), (!_vm.ongoing) ? _c('span', {
+      staticClass: "result"
+    }, [_c('div', {
+      staticClass: "color"
+    }, [_vm._v("\n                    " + _vm._s(choice.rank + 1) + "\n                    "), _c('sup', [_vm._v(" " + _vm._s(_vm.cardinal(choice.rank)) + " ")])]), _vm._v("\n                " + _vm._s(_vm.verbal(choice.note)) + "\n            ")]) : _vm._e(), _vm._v(" "), (_vm.voteKey) ? _c('vote-input', {
+      model: {
+        value: (choice.note),
+        callback: function($$v) {
+          choice.note = $$v
+        },
+        expression: "choice.note"
+      }
+    }) : _vm._e(), _vm._v(" "), (choice.description) ? _c('p', [_vm._v(" " + _vm._s(choice.description) + " ")]) : _vm._e()], 1)
+  }), _vm._v(" "), (_vm.voteKey) ? _c('div', {
+    staticClass: "actions"
+  }, [(_vm.voted) ? _c('span', [_vm._v("\n                Votre vote a été pris en compte, merci !\n            ")]) : _c('async-button', {
+    attrs: {
+      "disabled": !_vm.canVote,
+      "value": "Voter",
+      "request": _vm.vote()
+    },
+    on: {
+      "done": function($event) {
+        this.voted = true
+      }
+    }
+  })], 1) : _vm._e()], 2) : _vm._e()], 1)
+},staticRenderFns: []}
+
+/***/ }),
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16829,49 +18021,166 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["default"] = (VueRouter);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(10)))
 
 /***/ }),
-/* 29 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(15);
+var content = __webpack_require__(33);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("39e5b592", content, true);
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(34);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("4132aaf6", content, true);
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(35);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("616a2e3e", content, true);
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(36);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("3ed282ed", content, true);
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(37);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("410cad93", content, true);
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(38);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("537fe1bf", content, true);
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(39);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("bcb373fc", content, true);
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(40);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var update = __webpack_require__(2)("59950e70", content, true);
 
 /***/ }),
-/* 30 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(16);
+var content = __webpack_require__(41);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("464a9a1e", content, true);
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(42);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var update = __webpack_require__(2)("38b0cf23", content, true);
 
 /***/ }),
-/* 31 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(17);
+var content = __webpack_require__(43);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var update = __webpack_require__(2)("580814dc", content, true);
 
 /***/ }),
-/* 32 */
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(44);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("35b42cdd", content, true);
+
+/***/ }),
+/* 78 */
 /***/ (function(module, exports) {
 
 /**
@@ -16904,1306 +18213,10 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 33 */
+/* 79 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "div.new-election[data-v-186e666e]{text-align:center;margin-bottom:2.5em}div.new-election a[data-v-186e666e]{padding:.3em .5em;display:inline-block;background-color:#b41e1e;border:3px double #f5f5f5;font-size:1.5em;border-radius:10px;transition:box-shadow .3s ease-out}div.new-election a[data-v-186e666e]:hover{box-shadow:inset 0 0 200px 200px rgba(0,0,0,.2)}.elections[data-v-186e666e]{padding-left:20px;padding-right:20px}p[data-v-186e666e]{margin-bottom:0}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(34);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("616a2e3e", content, true);
-
-/***/ }),
-/* 36 */,
-/* 37 */,
-/* 38 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-//
-
-module.exports = {
-    props: ['title']
-};
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "h1[data-v-09493d78]{left:0;position:absolute;box-sizing:border-box;width:100%;padding-top:.3em;padding-bottom:.3em;margin-bottom:1.5em;border-bottom:1px solid rgba(0,0,0,.2);border-top:1px solid rgba(0,0,0,.2);text-align:center}h1 span[data-v-09493d78]{font-size:.6em;font-weight:400}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(42)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(38),
-  /* template */
-  __webpack_require__(41),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-09493d78",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.title) ? _c('h1', [_vm._v("\n    " + _vm._s(_vm.title) + "\n    "), _vm._t("default")], 2) : _vm._e()
-},staticRenderFns: []}
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(39);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("39e5b592", content, true);
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-module.exports = {
-    props: ['slug', 'name', 'ongoing', 'broadcasted', 'description'],
-    components: {
-        ElectionState: __webpack_require__(66)
-    }
-};
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "a[data-v-3f17a97b]{display:inline-block;font-size:1.3em;font-weight:700;margin-top:.2em;margin-bottom:.2em;transition:opacity .3s ease-out}a[data-v-3f17a97b]:hover{opacity:.6}a[data-v-3f17a97b]:nth-child(2){color:#b41e1e;font-size:1em;font-weight:400}header[data-v-3f17a97b]{border-bottom:1px double #f5f5f5;padding-left:40px}article[data-v-3f17a97b]{background-color:#e6e6e6;border-radius:10px;padding-bottom:.5em;margin-bottom:1em}div.description[data-v-3f17a97b]{padding-left:40px;max-height:85px;overflow:auto}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(47)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(43),
-  /* template */
-  __webpack_require__(46),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-3f17a97b",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('article', [_c('header', [_c('router-link', {
-    attrs: {
-      "to": '/election/' + _vm.slug
-    }
-  }, [_vm._v(" " + _vm._s(_vm.name) + " ")]), _vm._v("  \n        ("), _c('router-link', {
-    attrs: {
-      "to": '/edit/' + _vm.slug
-    }
-  }, [_vm._v(" ✎ Editer ")]), _vm._v(")  \n        "), _c('election-state', {
-    attrs: {
-      "ongoing": _vm.ongoing,
-      "broadcasted": _vm.broadcasted
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "description",
-    domProps: {
-      "innerHTML": _vm._s(_vm.description.html)
-    }
-  })])
-},staticRenderFns: []}
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(44);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("537fe1bf", content, true);
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-module.exports = {
-    props: ['error', 'loading']
-};
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(85)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(48),
-  /* template */
-  __webpack_require__(50),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-2de0f2cc",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "l-e-container"
-  }, [(_vm.loading) ? _c('div', {
-    staticClass: "loader big"
-  }, [_vm._v(" 😏 ")]) : (_vm.error) ? _c('div', {
-    staticClass: "error"
-  }, [_vm._v("\n        " + _vm._s(_vm.error.body || _vm.error) + "\n    ")]) : _vm._e()])
-},staticRenderFns: []}
-
-/***/ }),
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-module.exports = {
-    props: ['value', 'request', 'disabled'],
-    data: function () {
-        return {
-            loading: null,
-            error: null
-        };
-    },
-    methods: {
-        doRequest() {
-            this.loading = true;
-            this.request().then(data => {
-                this.$emit('done', data);
-            }).catch(err => {
-                console.log(err);
-                this.error = err;
-            }).then(() => {
-                this.loading = false;
-            });
-        }
-    }
-};
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".disabled[data-v-179631c9]{color:red}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(58)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(54),
-  /* template */
-  __webpack_require__(57),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-179631c9",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('label', {
-    class: {
-      disabled: _vm.disabled
-    }
-  }, [_c('button', {
-    staticClass: "important",
-    attrs: {
-      "disabled": _vm.disabled
-    },
-    on: {
-      "click": _vm.doRequest
-    }
-  }, [_vm._v("\n        " + _vm._s(_vm.value) + "\n        "), (_vm.loading) ? _c('div', {
-    staticClass: "loader"
-  }, [_vm._v("\n            😏\n        ")]) : _vm._e()])])
-},staticRenderFns: []}
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(55);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("4132aaf6", content, true);
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(63)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(60),
-  /* template */
-  __webpack_require__(62),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-26796479",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-module.exports = {
-    props: ['creation'],
-    components: {
-        PageTitle: __webpack_require__(40),
-        AsyncButton: __webpack_require__(56),
-        LoadOrError: __webpack_require__(49),
-        ElectionState: __webpack_require__(66)
-    },
-    mixins: [__webpack_require__(76)],
-    computed: {
-        title() {
-            if (this.slug) {
-                return 'Editer une élection';
-            }
-            return 'Créer une élection';
-        },
-        actualChoices() {
-            return this.choices.filter(c => {
-                return c.name.slice();
-            });
-        },
-        canBroadcast() {
-            return this.slug && this.ongoing && this.actualChoices.length > 1 && this.name;
-        }
-    },
-    methods: {
-        afterWrite(body) {
-            if (this.slug !== body.slug) {
-                this.$router.push('/edit/' + body.slug);
-            } else {
-                this.changed = false;
-            }
-        },
-        saveOrUpdate() {
-            return () => {
-                if (this.slug) {
-                    return this.update();
-                }
-                return this.save();
-            };
-        },
-        save() {
-            return this.$http.post('/api/election/', {
-                name: this.name,
-                description: this.description,
-                choices: this.choices.filter(c => {
-                    return c.name.slice();
-                })
-            });
-        },
-        update() {
-            return this.$http.put('/api/election/' + this.slug, {
-                name: this.name,
-                description: this.description,
-                choices: this.actualChoices
-            });
-        },
-        broadcast() {
-            return () => this.$http.post('/api/election/' + this.slug, {
-                role: 'MEMBRE'
-            });
-        },
-        close() {
-            return () => this.$http.patch('/api/election/' + this.slug, {
-                ongoing: false
-            });
-        },
-        deleteElection() {
-            return () => this.$http.delete('/api/election/' + this.slug);
-        },
-        addChoice() {
-            this.changed = true;
-            this.choices.push({
-                name: '',
-                description: ''
-            });
-        },
-        deleteChoice(index) {
-            this.changed = true;
-            this.choices.splice(index, 1);
-        }
-    }
-};
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "div.form div[data-v-26796479]:first-child,div.form div[data-v-26796479]:nth-child(2){padding-bottom:1.8em}a[data-v-26796479]{display:inline-block;font-size:1em;padding-bottom:1.5em;font-weight:700}a span[data-v-26796479]{color:#b41e1e}a[data-v-26796479]:hover{text-decoration:underline}div.choice[data-v-26796479]{border-bottom:1px dashed rgba(0,0,0,.2);margin-bottom:1em}div.actions[data-v-26796479]{margin-top:2em;margin-bottom:2em}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('page-title', {
-    attrs: {
-      "title": _vm.title
-    }
-  }), _vm._v(" "), _c('load-or-error', {
-    attrs: {
-      "error": _vm.error,
-      "loading": _vm.loading
-    }
-  }), _vm._v(" "), (_vm.name || _vm.creation) ? _c('div', {
-    staticClass: "form"
-  }, [(_vm.slug) ? _c('router-link', {
-    attrs: {
-      "to": '/election/' + _vm.slug
-    }
-  }, [_c('span', [_vm._v(" ⇒ ")]), _vm._v(" Aller au vote\n        ")]) : _vm._e(), _vm._v(" "), (!_vm.creation) ? _c('div', [_c('b', [_vm._v(" Statut : ")]), _vm._v(" \n            "), _c('election-state', {
-    attrs: {
-      "ongoing": _vm.ongoing,
-      "broadcasted": _vm.broadcasted
-    }
-  })], 1) : _vm._e(), _vm._v(" "), (_vm.broadcasted) ? _c('div', {
-    staticClass: "error"
-  }, [_vm._v(" ℹ Vous ne pouvez pas éditer une élection qui a été diffusée. ")]) : _c('div', [_c('label', [_vm._v("\n                Nom de l'élection\n                "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.name),
-      expression: "name"
-    }],
-    attrs: {
-      "type": "text"
-    },
-    domProps: {
-      "value": (_vm.name)
-    },
-    on: {
-      "input": [function($event) {
-        if ($event.target.composing) { return; }
-        _vm.name = $event.target.value
-      }, function($event) {
-        _vm.changed = true
-      }]
-    }
-  })]), _vm._v(" "), _c('label', [_vm._v("\n                Description "), _c('em', [_vm._v(" (markdown autorisé) ")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.description),
-      expression: "description"
-    }],
-    domProps: {
-      "value": (_vm.description)
-    },
-    on: {
-      "input": [function($event) {
-        if ($event.target.composing) { return; }
-        _vm.description = $event.target.value
-      }, function($event) {
-        _vm.changed = true
-      }]
-    }
-  })]), _vm._v(" "), _c('h3', [_vm._v(" Choix ")]), _vm._v(" "), _vm._l((_vm.choices), function(choice, index) {
-    return _c('div', {
-      staticClass: "choice"
-    }, [_c('h4', [_vm._v("\n                    " + _vm._s(index + 1) + ".\n                    "), _c('input', {
-      attrs: {
-        "type": "button",
-        "value": "✘ Supprimer ce choix"
-      },
-      on: {
-        "click": function($event) {
-          _vm.deleteChoice(index)
-        }
-      }
-    })]), _vm._v(" "), _c('label', [_vm._v("\n                    Nom du choix\n                    "), _c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (choice.name),
-        expression: "choice.name"
-      }],
-      attrs: {
-        "type": "text"
-      },
-      domProps: {
-        "value": (choice.name)
-      },
-      on: {
-        "input": [function($event) {
-          if ($event.target.composing) { return; }
-          choice.name = $event.target.value
-        }, function($event) {
-          _vm.changed = true
-        }]
-      }
-    })]), _vm._v(" "), _c('label', [_vm._v("\n                    Description "), _c('em', [_vm._v(" (markdown autorisé) ")]), _vm._v(" "), _c('textarea', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (choice.description),
-        expression: "choice.description"
-      }],
-      domProps: {
-        "value": (choice.description)
-      },
-      on: {
-        "input": [function($event) {
-          if ($event.target.composing) { return; }
-          choice.description = $event.target.value
-        }, function($event) {
-          _vm.changed = true
-        }]
-      }
-    })])])
-  }), _vm._v(" "), _c('input', {
-    attrs: {
-      "type": "button",
-      "value": "✚ Ajouter un choix"
-    },
-    on: {
-      "click": _vm.addChoice
-    }
-  })], 2), _vm._v(" "), _c('div', {
-    staticClass: "actions"
-  }, [(!_vm.broadcasted) ? _c('async-button', {
-    attrs: {
-      "disabled": !_vm.name || !this.changed,
-      "value": "✓ Sauvegarder",
-      "request": _vm.saveOrUpdate()
-    },
-    on: {
-      "done": _vm.writeUp
-    }
-  }) : _vm._e(), _vm._v(" "), (_vm.canBroadcast) ? _c('async-button', {
-    attrs: {
-      "value": "🔗 Diffuser sur discord",
-      "request": _vm.broadcast()
-    },
-    on: {
-      "done": function($event) {
-        _vm.broadcasted = true
-      }
-    }
-  }) : _vm._e(), _vm._v(" "), (_vm.slug && _vm.ongoing && _vm.broadcasted) ? _c('async-button', {
-    attrs: {
-      "value": "🔒 Clore le vote",
-      "request": _vm.close()
-    },
-    on: {
-      "done": function($event) {
-        _vm.ongoing = false
-      }
-    }
-  }) : _vm._e(), _vm._v(" "), (_vm.slug) ? _c('async-button', {
-    attrs: {
-      "value": "✘ Supprimer l'élection",
-      "request": _vm.deleteElection()
-    },
-    on: {
-      "done": function($event) {
-        _vm.$router.push('/')
-      }
-    }
-  }) : _vm._e()], 1)], 1) : _vm._e()], 1)
-},staticRenderFns: []}
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(61);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("3ed282ed", content, true);
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-
-module.exports = {
-    props: ['ongoing', 'broadcasted']
-};
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "span[data-v-65c45f33]{padding:.1em .4em;border-radius:5px;box-sizing:border-box;font-size:1em!important}span.not-broadcasted[data-v-65c45f33]{border:1px dashed #960a0a}span.ongoing[data-v-65c45f33]{background-color:#32b432}span.terminated[data-v-65c45f33]{background-color:#969696}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(68)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(64),
-  /* template */
-  __webpack_require__(67),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-65c45f33",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (!_vm.broadcasted) ? _c('span', {
-    staticClass: "not-broadcasted"
-  }, [_vm._v(" Pas encore ouverte ")]) : (_vm.ongoing) ? _c('span', {
-    staticClass: "ongoing"
-  }, [_vm._v(" En cours ")]) : _c('span', {
-    staticClass: "terminated"
-  }, [_vm._v(" Terminée ")])
-},staticRenderFns: []}
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(65);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("bcb373fc", content, true);
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-const shuffle = __webpack_require__(78);
-
-module.exports = {
-    props: ['voteKey'],
-    data() {
-        return {
-            voted: false,
-            voters: null
-        };
-    },
-    mixins: [__webpack_require__(76)],
-    components: {
-        PageTitle: __webpack_require__(40),
-        AsyncButton: __webpack_require__(56),
-        LoadOrError: __webpack_require__(49),
-        ElectionState: __webpack_require__(66),
-        VoteInput: __webpack_require__(79)
-    },
-    computed: {
-        canVote() {
-            return this.choices.filter(c => c.note !== null).length === this.choices.length;
-        }
-    },
-    methods: {
-        afterWrite(body) {
-            this.voters = body.voters;
-            if (this.ongoing) {
-                this.choices = shuffle(this.choices);
-            } else {
-                this.choices = this.choices.sort((c1, c2) => c1.rank - c2.rank);
-            }
-        },
-        vote() {
-            return () => this.$http.post('/api/election/' + this.slug + '/vote', {
-                key: this.voteKey,
-                choices: this.choices.map(c => {
-                    return {
-                        id: c.id,
-                        note: c.note
-                    };
-                })
-            });
-        },
-        verbal: __webpack_require__(86),
-        cardinal(position) {
-            if (position === 0) {
-                return 'er';
-            }
-            return 'ème';
-        }
-    }
-};
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "p[data-v-e2116e06]{background-color:#e6e6e6;border:3px double #f5f5f5;border-radius:10px;min-height:120px;padding:1em;box-sizing:border-box;min-width:500px}.voters[data-v-e2116e06]{font-size:1.2em}.choice[data-v-e2116e06],.voters[data-v-e2116e06]{text-align:center;border-bottom:1px dashed rgba(0,0,0,.2);padding-bottom:1em;margin-bottom:1em}.choice h5[data-v-e2116e06]{font-size:1.2em;margin-top:.1em;margin-bottom:.1em}.choice p[data-v-e2116e06]{min-height:60px}.choice span[data-v-e2116e06]{font-size:1.2em}.choice span.result[data-v-e2116e06]{font-size:1.1em;line-height:.8}.choice span.result sup[data-v-e2116e06]{font-size:.7em;margin-left:-2px}.actions[data-v-e2116e06]{text-align:center}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(73)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(69),
-  /* template */
-  __webpack_require__(72),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-e2116e06",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('page-title', {
-    attrs: {
-      "title": _vm.name
-    }
-  }, [_c('span', {
-    staticStyle: {
-      "vertical-align": "middle"
-    }
-  }, [_vm._v("\n              "), _c('election-state', {
-    attrs: {
-      "ongoing": _vm.ongoing,
-      "broadcasted": _vm.broadcasted
-    }
-  }), _vm._v("\n             \n            "), _c('router-link', {
-    attrs: {
-      "to": '/edit/' + _vm.slug
-    }
-  }, [_vm._v("\n                ("), _c('span', {
-    staticClass: "color"
-  }, [_vm._v("✎ Editer")]), _vm._v(")\n            ")])], 1)]), _vm._v(" "), _c('load-or-error', {
-    attrs: {
-      "error": _vm.error,
-      "loading": _vm.loading
-    }
-  }), _vm._v(" "), (_vm.name) ? _c('div', {
-    staticClass: "form"
-  }, [_c('p', {
-    staticClass: "main"
-  }, [_vm._v(" " + _vm._s(_vm.description) + " ")]), _vm._v(" "), (_vm.voters) ? _c('div', {
-    staticClass: "voters"
-  }, [_c('span', {
-    staticClass: "color"
-  }, [_vm._v(" " + _vm._s(_vm.voters) + " ")]), _vm._v(" votant.e.s\n        ")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.choices), function(choice, index) {
-    return _c('div', {
-      staticClass: "choice"
-    }, [_c('h5', [_vm._v(" " + _vm._s(choice.name) + " ")]), _vm._v(" "), (!_vm.ongoing) ? _c('span', {
-      staticClass: "result"
-    }, [_c('div', {
-      staticClass: "color"
-    }, [_vm._v("\n                    " + _vm._s(choice.rank + 1) + "\n                    "), _c('sup', [_vm._v(" " + _vm._s(_vm.cardinal(choice.rank)) + " ")])]), _vm._v("\n                " + _vm._s(_vm.verbal(choice.note)) + "\n            ")]) : _vm._e(), _vm._v(" "), (_vm.voteKey) ? _c('vote-input', {
-      model: {
-        value: (choice.note),
-        callback: function($$v) {
-          choice.note = $$v
-        },
-        expression: "choice.note"
-      }
-    }) : _vm._e(), _vm._v(" "), (choice.description) ? _c('p', [_vm._v(" " + _vm._s(choice.description) + " ")]) : _vm._e()], 1)
-  }), _vm._v(" "), (_vm.voteKey) ? _c('div', {
-    staticClass: "actions"
-  }, [(_vm.voted) ? _c('span', [_vm._v("\n                Votre vote a été pris en compte, merci !\n            ")]) : _c('async-button', {
-    attrs: {
-      "disabled": !_vm.canVote,
-      "value": "Voter",
-      "request": _vm.vote()
-    },
-    on: {
-      "done": function($event) {
-        this.voted = true
-      }
-    }
-  })], 1) : _vm._e()], 2) : _vm._e()], 1)
-},staticRenderFns: []}
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(70);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("35b42cdd", content, true);
-
-/***/ }),
-/* 74 */,
-/* 75 */,
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = {
-    props: ['slug'],
-    data: function data() {
-        return {
-            name: '',
-            description: '',
-            choices: [],
-            error: null,
-            loading: null,
-            changed: false,
-            ongoing: true,
-            broadcasted: false
-        };
-    },
-    created: function created() {
-        this.fetch();
-    },
-
-    watch: {
-        '$route': 'fetch'
-    },
-    methods: {
-        fetch: function fetch() {
-            var _this = this;
-
-            if (this.slug) {
-                this.loading = true;
-                this.$http.get('/api/election/' + this.slug).then(this.writeUp).catch(function (err) {
-                    _this.error = err;
-                }).then(function () {
-                    _this.loading = false;
-                });
-            }
-        },
-        writeUp: function writeUp(_ref) {
-            var body = _ref.body;
-
-            if (body.slug) {
-                this.name = body.name;
-                this.description = body.description.md;
-                this.choices = body.choices.map(function (c) {
-                    return {
-                        id: c._id,
-                        name: c.name,
-                        description: c.description.md,
-                        note: c.note,
-                        rank: c.rank
-                    };
-                });
-                this.ongoing = body.ongoing;
-                this.broadcasted = body.broadcasted;
-            }
-            if (this.afterWrite) {
-                this.afterWrite(body);
-            }
-        }
-    }
-};
-
-/***/ }),
-/* 77 */,
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (array) {
-    var currentIndex = array.length,
-        temporaryValue = void 0,
-        randomIndex = void 0;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-};
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function injectStyle (ssrContext) {
-  __webpack_require__(83)
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(80),
-  /* template */
-  __webpack_require__(82),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-72ccd3bb",
-  /* moduleIdentifier (server only) */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-module.exports = {
-    props: ['value'],
-    data: function () {
-        return {
-            values: new Array(7)
-        };
-    },
-    methods: {
-        verbal: __webpack_require__(86)
-    }
-};
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "b[data-v-72ccd3bb]{margin-right:1em}label[data-v-72ccd3bb]{display:inline-block;position:relative;cursor:pointer;transition:all .3s ease-out;text-align:center;margin-left:.3em;margin-right:.3em;margin-bottom:.5em}label:hover span[data-v-72ccd3bb]{color:#b41e1e}span[data-v-72ccd3bb]{width:100%;display:inline-block;border:1px solid transparent;border-radius:5px;transition:all .3s ease-out;box-sizing:border-box;font-size:.9em}input[type=radio][data-v-72ccd3bb]{visibility:hidden;margin:0;width:0}input[type=radio]:checked+span[data-v-72ccd3bb]{color:#b41e1e;border-color:#b41e1e}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', _vm._l((_vm.values), function(_, value) {
-    return _c('label', [_c('input', {
-      attrs: {
-        "type": "radio",
-        "name": _vm._uid
-      },
-      on: {
-        "change": function($event) {
-          _vm.$emit('input', value)
-        }
-      }
-    }), _vm._v(" "), _c('span', [_vm._v(" " + _vm._s(_vm.verbal(value)) + " ")])])
-  }))
-},staticRenderFns: []}
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(81);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("464a9a1e", content, true);
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".l-e-container[data-v-2de0f2cc]{text-align:center;padding-top:100px}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(84);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("410cad93", content, true);
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (note) {
-    switch (note) {
-        case 0:
-            return 'À rejeter';
-        case 1:
-            return 'Insuffisant';
-        case 2:
-            return 'Passable';
-        case 3:
-            return 'Assez bien';
-        case 4:
-            return 'Bien';
-        case 5:
-            return 'Très bien';
-        case 6:
-            return 'Excellent';
-    }
-};
 
 /***/ })
 /******/ ]);
