@@ -11,7 +11,11 @@ const routes = ['/', '/create', '/edit/:slug', '/election/:slug', '/election/:sl
 
 module.exports = function(app) {
     app.get(routes, (req, res) => {
-        const stream = renderer.renderToStream({url: req.originalUrl});
+        const stream = renderer.renderToStream({
+            url: req.originalUrl,
+            isAuth: !!req.user,
+            head: req.user ? '<script> window._AUTH = true; </script>' : ''
+        });
 
         stream.on('error', (err) => {
             console.log(err);

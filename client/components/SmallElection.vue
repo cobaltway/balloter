@@ -2,7 +2,9 @@
     <article>
         <header>
             <router-link :to="'/election/' + slug"> {{ name }} </router-link> &nbsp;
-            (<router-link :to="'/edit/' + slug"> ✎ Editer </router-link>) &nbsp;
+            <template v-if="isAuth">
+                (<router-link :to="'/edit/' + slug"> ✎ Editer </router-link>) &nbsp;
+            </template>
             <election-state :ongoing="ongoing" :broadcasted="broadcasted"></election-state>
         </header>
         <div class="description" v-html="description.html"></div>
@@ -11,7 +13,7 @@
 
 <script>
     module.exports = {
-        props: ['slug', 'name', 'ongoing', 'broadcasted', 'description'],
+        props: ['slug', 'name', 'ongoing', 'broadcasted', 'description', 'isAuth'],
         components: {
             ElectionState: require('./ElectionState.vue')
         }

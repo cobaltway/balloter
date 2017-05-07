@@ -25,7 +25,10 @@ module.exports = function(app) {
             handler: require('../resources/' + name),
             authNeeded: name.indexOf('&') === 0,
             method: name.split('_')[0].replace('&', '').toLowerCase(),
-            httpPath: name.split('_')[1].replace(/-/g, '/').replace(/\$/g, ':').replace(/\.js/, '')
+            httpPath: name.split('_')[1].replace(/-/g, '/')
+                .replace(/\$/g, ':')
+                .replace(/!/g, '?')
+                .replace(/\.js/, '')
         });
     });
 };

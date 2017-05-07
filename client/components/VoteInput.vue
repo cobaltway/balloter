@@ -1,15 +1,14 @@
 <template>
     <div>
-        <label v-for="(_, value) in values">
-            <input type="radio" :name="_uid" @change="$emit('input', value)"/>
-            <span> {{ verbal(value) }} </span>
+        <label v-for="(_, i) in values">
+            <input type="radio" :name="_uid" @change="$emit('input', i)"/>
+            <span> {{ verbal(i) }} </span>
         </label>
     </div>
 </template>
 
 <script>
     module.exports = {
-        props: ['value'],
         data: function() {
             return {
                 values: new Array(7)

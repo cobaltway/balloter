@@ -4,7 +4,7 @@
             <span style="vertical-align: middle">
                 &nbsp; <election-state :ongoing="ongoing" :broadcasted="broadcasted"></election-state>
                 &nbsp;
-                <router-link :to="'/edit/' + slug">
+                <router-link :to="'/edit/' + slug" v-if="isAuth">
                     (<span class="color">✎ Editer</span>)
                 </router-link>
             </span>
@@ -12,10 +12,12 @@
         <load-or-error :error="error" :loading="loading"></load-or-error>
 
         <div v-if="name" class="form">
-            <p class="main"> {{ description }} </p>
+            <p class="main" v-if="description"> {{ description }} </p>
 
             <div v-if="voters" class="voters">
-                <span class="color"> {{ voters }} </span> votant.e.s
+                <div v-if="alreadyVoted"> Vous avez déjà voté pour cette élection. </div>
+                <span class="color"> {{ voters }} </span>
+                votant.e<template v-if="voters.length > 1">.s</template>
             </div>
 
             <div class="choice" v-for="(choice, index) in choices">
@@ -27,17 +29,19 @@
                     </div>
                     {{ verbal(choice.note) }}
                 </span>
-                <vote-input v-if="voteKey" v-model="choice.note"></vote-input>
+                <vote-input v-if="voteKey && !alreadyVoted"
+                    @input="v => choice.note = v">
+                </vote-input>
                 <p v-if="choice.description"> {{ choice.description }} </p>
             </div>
 
-            <div v-if="voteKey" class="actions">
+            <div v-if="voteKey && !alreadyVoted" class="actions">
                 <span v-if="voted">
                     Votre vote a été pris en compte, merci !
                 </span>
                 <async-button v-else
                     :disabled="!canVote" value="Voter"
-                    :request="vote()" @done="this.voted = true">
+                    :request="vote()" @done="voted = true">
                 </async-button>
             </div>
         </div>
@@ -48,9 +52,9 @@
     const shuffle = require('../libs/shuffle.js');
 
     module.exports = {
-        props: ['voteKey'],
         data() {
             return {
+                alreadyVoted: false,
                 voted: false,
                 voters: null
             };
@@ -65,11 +69,14 @@
         },
         computed: {
             canVote() {
-                return this.choices.filter((c) => c.note !== null).length === this.choices.length;
+                return this.choices.filter((c) => c.note !== undefined).length === this.choices.length;
             }
         },
         methods: {
             afterWrite(body) {
+                if (body.voted) {
+                    this.alreadyVoted = true;
+                }
                 this.voters = body.voters;
                 if (this.ongoing) {
                     this.choices = shuffle(this.choices);
@@ -95,6 +102,15 @@
                     return 'er';
                 }
                 return 'ème';
+            }
+        },
+        watch: {
+            voted(hasVoted, old) {
+                if (hasVoted) {
+                    window.setTimeout(() => {
+                        this.$router.push('/election/' + this.slug);
+                    }, 1000);
+                }
             }
         }
     };

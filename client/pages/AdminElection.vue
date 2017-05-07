@@ -4,6 +4,11 @@
 
         <load-or-error :error="error" :loading="loading"></load-or-error>
 
+        <div v-if="!isAuth" style="color: red">
+            ATTENTION, VOUS N'ÊTES PAS CONNECTÉ. CONNECTEZ VOUS AVANT D'ADMINISTRER.
+            <a href="/keystone/signin">> Aller vers la page de connexion</a>
+        </div>
+
         <div v-if="name || creation" class="form">
 
             <router-link v-if="slug" :to="'/election/' + slug">
@@ -56,7 +61,7 @@
                 </async-button>
                 <async-button v-if="slug && ongoing && broadcasted"
                     value="🔒 Clore le vote"
-                    :request="close()" @done="ongoing = false">
+                    :request="close()" @done="ongoing = false; $router.push('/election/' + slug);">
                 </async-button>
                 <async-button v-if="slug"
                     value="✘ Supprimer l'élection"
@@ -69,7 +74,7 @@
 
 <script>
     module.exports = {
-        props: ['creation'],
+        props: ['creation', 'isAuth'],
         components: {
             PageTitle: require('../components/PageTitle.vue'),
             AsyncButton: require('../components/AsyncButton.vue'),
@@ -90,7 +95,7 @@
                 });
             },
             canBroadcast() {
-                return this.slug && this.ongoing && this.actualChoices.length > 1 && this.name;
+                return this.slug && !this.broadcasted && this.ongoing && this.actualChoices.length > 1 && this.name;
             }
         },
         methods: {
@@ -127,7 +132,7 @@
                 });
             },
             broadcast() {
-                return () => this.$http.post('/api/election/' + this.slug, {
+                return () => this.$http.post('/api/election/' + this.slug + '/broadcast', {
                     role: 'MEMBRE'
                 });
             },

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="new-election">
-            <router-link to="/create">
+            <router-link to="/create" v-if="isAuth">
                 ✚ Nouvelle élection
             </router-link>
         </div>
@@ -12,8 +12,10 @@
                 Terminées
                 <input type="checkbox" v-model="ongoing" />
                 En cours
-                <input type="checkbox" v-model="notBroadcasted" />
-                Pas encore ouvertes
+                <template v-if="isAuth">
+                    <input type="checkbox" v-model="notBroadcasted"/>
+                    Pas encore ouvertes
+                </template>
             </span>
         </page-title>
 
@@ -23,7 +25,7 @@
             <small-election
                 v-for="election in elections"
                 v-if="shouldDisplay(election)"
-                v-bind="election">
+                v-bind="election" :isAuth="isAuth">
             </small-election>
         </div>
     </div>
@@ -31,6 +33,7 @@
 
 <script>
 module.exports = {
+    props: ['isAuth'],
     data: function() {
         return {
             loading: true,
@@ -54,10 +57,11 @@ module.exports = {
             });
         },
         shouldDisplay(election) {
-            return !((!election.broadcasted && !this.notBroadcasted) ||
+            return (!((!election.broadcasted && !this.notBroadcasted) ||
             (election.ongoing && !this.ongoing) ||
             (!election.ongoing && !this.terminated)) ||
-            !election.broadcasted && this.notBroadcasted;
+            !election.broadcasted && this.notBroadcasted) &&
+            (election.broadcasted || (!election.broadcasted && this.isAuth));
         }
     },
     components: {

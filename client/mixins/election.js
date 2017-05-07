@@ -1,5 +1,5 @@
 module.exports = {
-    props: ['slug'],
+    props: ['slug', 'voteKey', 'isAuth'],
     mixins: [require('./fetch.js')],
     data: function() {
         return {
@@ -17,13 +17,16 @@ module.exports = {
         fetchFunc() {
             if (this.slug) {
                 this.loading = true;
-                this.$http.get('/api/election/' + this.slug)
+                this.$http.get('/api/election/' + this.slug + '/' + this.voteKey)
                 .then(this.writeUp)
                 .catch((err) => {
                     this.error = err;
                 }).then(() => {
                     this.loading = false;
                 });
+            }
+            else {
+                this.loading = false;
             }
         },
         writeUp({body}) {

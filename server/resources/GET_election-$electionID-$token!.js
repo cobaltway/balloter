@@ -1,7 +1,7 @@
 const keystone = require('keystone'),
     Election = keystone.list('Election');
 
-module.exports = function({electionID}) {
+module.exports = function({electionID, token}) {
     return new Promise((resolve, reject) => {
         Election.model.findOne({slug: electionID})
         .populate('choices')
@@ -18,7 +18,8 @@ module.exports = function({electionID}) {
                         rank: election.ongoing ? undefined : c.rank
                     });
                 }),
-                voters: election.consumedKeys.length
+                voters: election.consumedKeys.length,
+                voted: election.consumedKeys.indexOf(token) !== -1
             }));
         });
     });

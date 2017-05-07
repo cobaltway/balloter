@@ -10182,7 +10182,7 @@ module.exports = function (note) {
 
 
 module.exports = {
-    props: ['slug'],
+    props: ['slug', 'voteKey', 'isAuth'],
     mixins: [__webpack_require__(9)],
     data: function data() {
         return {
@@ -10202,11 +10202,13 @@ module.exports = {
 
             if (this.slug) {
                 this.loading = true;
-                this.$http.get('/api/election/' + this.slug).then(this.writeUp).catch(function (err) {
+                this.$http.get('/api/election/' + this.slug + '/' + this.voteKey).then(this.writeUp).catch(function (err) {
                     _this.error = err;
                 }).then(function () {
                     _this.loading = false;
                 });
+            } else {
+                this.loading = false;
             }
         },
         writeUp: function writeUp(_ref) {
@@ -10563,29 +10565,34 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vueRouter2.default);
 
-module.exports = new _vueRouter2.default({
-    mode: 'history',
-    routes: [{
-        path: '/',
-        component: __webpack_require__(51)
-    }, {
-        path: '/create',
-        component: __webpack_require__(12),
-        props: { creation: true }
-    }, {
-        path: '/edit/:slug',
-        component: __webpack_require__(12),
-        props: true
-    }, {
-        path: '/election/:slug',
-        component: __webpack_require__(13),
-        props: true
-    }, {
-        path: '/election/:slug/:voteKey',
-        component: __webpack_require__(13),
-        props: true
-    }]
-});
+module.exports = function (isAuth) {
+    return new _vueRouter2.default({
+        mode: 'history',
+        routes: [{
+            path: '/',
+            component: __webpack_require__(51),
+            props: { isAuth: isAuth }
+        }, {
+            path: '/create',
+            component: __webpack_require__(12),
+            props: function props(route) {
+                return Object.assign({}, route.params, { isAuth: isAuth, creation: true });
+            }
+        }, {
+            path: '/edit/:slug',
+            component: __webpack_require__(12),
+            props: function props(route) {
+                return Object.assign({}, route.params, { isAuth: isAuth });
+            }
+        }, {
+            path: '/election/:slug/:voteKey?',
+            component: __webpack_require__(13),
+            props: function props(route) {
+                return Object.assign({}, route.params, { isAuth: isAuth });
+            }
+        }]
+    });
+};
 
 /***/ }),
 /* 16 */
@@ -12293,9 +12300,11 @@ module.exports = {
 //
 //
 //
+//
+//
 
 module.exports = {
-    props: ['slug', 'name', 'ongoing', 'broadcasted', 'description'],
+    props: ['slug', 'name', 'ongoing', 'broadcasted', 'description', 'isAuth'],
     components: {
         ElectionState: __webpack_require__(3)
     }
@@ -12316,7 +12325,6 @@ module.exports = {
 //
 
 module.exports = {
-    props: ['value'],
     data: function () {
         return {
             values: new Array(7)
@@ -12419,9 +12427,14 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
 
 module.exports = {
-    props: ['creation'],
+    props: ['creation', 'isAuth'],
     components: {
         PageTitle: __webpack_require__(5),
         AsyncButton: __webpack_require__(11),
@@ -12442,7 +12455,7 @@ module.exports = {
             });
         },
         canBroadcast() {
-            return this.slug && this.ongoing && this.actualChoices.length > 1 && this.name;
+            return this.slug && !this.broadcasted && this.ongoing && this.actualChoices.length > 1 && this.name;
         }
     },
     methods: {
@@ -12478,7 +12491,7 @@ module.exports = {
             });
         },
         broadcast() {
-            return () => this.$http.post('/api/election/' + this.slug, {
+            return () => this.$http.post('/api/election/' + this.slug + '/broadcast', {
                 role: 'MEMBRE'
             });
         },
@@ -12539,8 +12552,11 @@ module.exports = {
 //
 //
 //
+//
+//
 
 module.exports = {
+    props: ['isAuth'],
     data: function () {
         return {
             loading: true,
@@ -12564,7 +12580,7 @@ module.exports = {
             });
         },
         shouldDisplay(election) {
-            return !(!election.broadcasted && !this.notBroadcasted || election.ongoing && !this.ongoing || !election.ongoing && !this.terminated) || !election.broadcasted && this.notBroadcasted;
+            return (!(!election.broadcasted && !this.notBroadcasted || election.ongoing && !this.ongoing || !election.ongoing && !this.terminated) || !election.broadcasted && this.notBroadcasted) && (election.broadcasted || !election.broadcasted && this.isAuth);
         }
     },
     components: {
@@ -12624,13 +12640,17 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
 
 const shuffle = __webpack_require__(30);
 
 module.exports = {
-    props: ['voteKey'],
     data() {
         return {
+            alreadyVoted: false,
             voted: false,
             voters: null
         };
@@ -12645,11 +12665,14 @@ module.exports = {
     },
     computed: {
         canVote() {
-            return this.choices.filter(c => c.note !== null).length === this.choices.length;
+            return this.choices.filter(c => c.note !== undefined).length === this.choices.length;
         }
     },
     methods: {
         afterWrite(body) {
+            if (body.voted) {
+                this.alreadyVoted = true;
+            }
             this.voters = body.voters;
             if (this.ongoing) {
                 this.choices = shuffle(this.choices);
@@ -12675,6 +12698,15 @@ module.exports = {
             }
             return 'ème';
         }
+    },
+    watch: {
+        voted(hasVoted, old) {
+            if (hasVoted) {
+                window.setTimeout(() => {
+                    this.$router.push('/election/' + this.slug);
+                }, 1000);
+            }
+        }
     }
 };
 
@@ -12697,35 +12729,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vueResource2.default);
 
-var router = __webpack_require__(15);
-var app = new _vue2.default({
-    render: function render(createElement) {
-        return createElement('div', { domProps: { id: 'app' } }, [createElement('main-header'), createElement('main-content', [createElement('router-view')])]);
-    },
+var app = function app() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        url = _ref.url,
+        isAuth = _ref.isAuth;
 
-    components: {
-        MainHeader: __webpack_require__(17),
-        MainContent: __webpack_require__(16)
-    },
-    router: router
-});
+    var router = __webpack_require__(15)(isAuth);
+    var vue = new _vue2.default({
+        render: function render(createElement) {
+            return createElement('div', { domProps: { id: 'app' } }, [createElement('main-header'), createElement('main-content', [createElement('router-view')])]);
+        },
 
-if (typeof window !== 'undefined') {
-    app.$mount('#app');
-}
-
-module.exports = function (_ref) {
-    var url = _ref.url;
+        components: {
+            MainHeader: __webpack_require__(17),
+            MainContent: __webpack_require__(16)
+        },
+        router: router
+    });
 
     return new Promise(function (resolve, reject) {
-        router.push(url);
+        if (url) {
+            router.push(url);
+        }
         router.onReady(function () {
-            resolve(app);
+            resolve(vue);
         }, reject);
-    }).catch(function (e) {
-        console.log(e);
-    });
+    }).catch(console.log);
 };
+
+if (typeof window !== 'undefined') {
+    app({ isAuth: window._AUTH }).then(function (vue) {
+        return vue.$mount('#app');
+    });
+}
+
+module.exports = app;
 
 /***/ }),
 /* 30 */
@@ -15086,11 +15124,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('div', {
     staticClass: "new-election"
-  }, [_c('router-link', {
+  }, [(_vm.isAuth) ? _c('router-link', {
     attrs: {
       "to": "/create"
     }
-  }, [_vm._v("\n            ✚ Nouvelle élection\n        ")])], 1), _vm._v(" "), _c('page-title', {
+  }, [_vm._v("\n            ✚ Nouvelle élection\n        ")]) : _vm._e()], 1), _vm._v(" "), _c('page-title', {
     attrs: {
       "title": "Liste des élections"
     }
@@ -15156,7 +15194,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("\n            En cours\n            "), _c('input', {
+  }), _vm._v("\n            En cours\n            "), (_vm.isAuth) ? [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -15187,7 +15225,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("\n            Pas encore ouvertes\n        ")])]), _vm._v(" "), _c('load-or-error', {
+  }), _vm._v("\n                Pas encore ouvertes\n            ")] : _vm._e()], 2)]), _vm._v(" "), _c('load-or-error', {
     attrs: {
       "error": _vm.error,
       "loading": _vm.loading
@@ -15195,7 +15233,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), (_vm.elections) ? _c('div', {
     staticClass: "elections"
   }, _vm._l((_vm.elections), function(election) {
-    return (_vm.shouldDisplay(election)) ? _c('small-election', _vm._b({}, 'small-election', election)) : _vm._e()
+    return (_vm.shouldDisplay(election)) ? _c('small-election', _vm._b({
+      attrs: {
+        "isAuth": _vm.isAuth
+      }
+    }, 'small-election', election)) : _vm._e()
   })) : _vm._e()], 1)
 },staticRenderFns: []}
 
@@ -15213,7 +15255,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "error": _vm.error,
       "loading": _vm.loading
     }
-  }), _vm._v(" "), (_vm.name || _vm.creation) ? _c('div', {
+  }), _vm._v(" "), (!_vm.isAuth) ? _c('div', {
+    staticStyle: {
+      "color": "red"
+    }
+  }, [_vm._v("\n        ATTENTION, VOUS N'ÊTES PAS CONNECTÉ. CONNECTEZ VOUS AVANT D'ADMINISTRER.\n        "), _c('a', {
+    attrs: {
+      "href": "/keystone/signin"
+    }
+  }, [_vm._v("> Aller vers la page de connexion")])]) : _vm._e(), _vm._v(" "), (_vm.name || _vm.creation) ? _c('div', {
     staticClass: "form"
   }, [(_vm.slug) ? _c('router-link', {
     attrs: {
@@ -15354,7 +15404,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "done": function($event) {
-        _vm.ongoing = false
+        _vm.ongoing = false;
+        _vm.$router.push('/election/' + _vm.slug);
       }
     }
   }) : _vm._e(), _vm._v(" "), (_vm.slug) ? _c('async-button', {
@@ -15393,16 +15444,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": '/election/' + _vm.slug
     }
-  }, [_vm._v(" " + _vm._s(_vm.name) + " ")]), _vm._v("  \n        ("), _c('router-link', {
+  }, [_vm._v(" " + _vm._s(_vm.name) + " ")]), _vm._v("  \n        "), (_vm.isAuth) ? [_vm._v("\n            ("), _c('router-link', {
     attrs: {
       "to": '/edit/' + _vm.slug
     }
-  }, [_vm._v(" ✎ Editer ")]), _vm._v(")  \n        "), _c('election-state', {
+  }, [_vm._v(" ✎ Editer ")]), _vm._v(")  \n        ")] : _vm._e(), _vm._v(" "), _c('election-state', {
     attrs: {
       "ongoing": _vm.ongoing,
       "broadcasted": _vm.broadcasted
     }
-  })], 1), _vm._v(" "), _c('div', {
+  })], 2), _vm._v(" "), _c('div', {
     staticClass: "description",
     domProps: {
       "innerHTML": _vm._s(_vm.description.html)
@@ -15437,7 +15488,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', _vm._l((_vm.values), function(_, value) {
+  return _c('div', _vm._l((_vm.values), function(_, i) {
     return _c('label', [_c('input', {
       attrs: {
         "type": "radio",
@@ -15445,10 +15496,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "change": function($event) {
-          _vm.$emit('input', value)
+          _vm.$emit('input', i)
         }
       }
-    }), _vm._v(" "), _c('span', [_vm._v(" " + _vm._s(_vm.verbal(value)) + " ")])])
+    }), _vm._v(" "), _c('span', [_vm._v(" " + _vm._s(_vm.verbal(i)) + " ")])])
   }))
 },staticRenderFns: []}
 
@@ -15503,42 +15554,38 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "ongoing": _vm.ongoing,
       "broadcasted": _vm.broadcasted
     }
-  }), _vm._v("\n             \n            "), _c('router-link', {
+  }), _vm._v("\n             \n            "), (_vm.isAuth) ? _c('router-link', {
     attrs: {
       "to": '/edit/' + _vm.slug
     }
   }, [_vm._v("\n                ("), _c('span', {
     staticClass: "color"
-  }, [_vm._v("✎ Editer")]), _vm._v(")\n            ")])], 1)]), _vm._v(" "), _c('load-or-error', {
+  }, [_vm._v("✎ Editer")]), _vm._v(")\n            ")]) : _vm._e()], 1)]), _vm._v(" "), _c('load-or-error', {
     attrs: {
       "error": _vm.error,
       "loading": _vm.loading
     }
   }), _vm._v(" "), (_vm.name) ? _c('div', {
     staticClass: "form"
-  }, [_c('p', {
+  }, [(_vm.description) ? _c('p', {
     staticClass: "main"
-  }, [_vm._v(" " + _vm._s(_vm.description) + " ")]), _vm._v(" "), (_vm.voters) ? _c('div', {
+  }, [_vm._v(" " + _vm._s(_vm.description) + " ")]) : _vm._e(), _vm._v(" "), (_vm.voters) ? _c('div', {
     staticClass: "voters"
-  }, [_c('span', {
+  }, [(_vm.alreadyVoted) ? _c('div', [_vm._v(" Vous avez déjà voté pour cette élection. ")]) : _vm._e(), _vm._v(" "), _c('span', {
     staticClass: "color"
-  }, [_vm._v(" " + _vm._s(_vm.voters) + " ")]), _vm._v(" votant.e.s\n        ")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.choices), function(choice, index) {
+  }, [_vm._v(" " + _vm._s(_vm.voters) + " ")]), _vm._v("\n            votant.e"), (_vm.voters.length > 1) ? [_vm._v(".s")] : _vm._e()], 2) : _vm._e(), _vm._v(" "), _vm._l((_vm.choices), function(choice, index) {
     return _c('div', {
       staticClass: "choice"
     }, [_c('h5', [_vm._v(" " + _vm._s(choice.name) + " ")]), _vm._v(" "), (!_vm.ongoing) ? _c('span', {
       staticClass: "result"
     }, [_c('div', {
       staticClass: "color"
-    }, [_vm._v("\n                    " + _vm._s(choice.rank + 1) + "\n                    "), _c('sup', [_vm._v(" " + _vm._s(_vm.cardinal(choice.rank)) + " ")])]), _vm._v("\n                " + _vm._s(_vm.verbal(choice.note)) + "\n            ")]) : _vm._e(), _vm._v(" "), (_vm.voteKey) ? _c('vote-input', {
-      model: {
-        value: (choice.note),
-        callback: function($$v) {
-          choice.note = $$v
-        },
-        expression: "choice.note"
+    }, [_vm._v("\n                    " + _vm._s(choice.rank + 1) + "\n                    "), _c('sup', [_vm._v(" " + _vm._s(_vm.cardinal(choice.rank)) + " ")])]), _vm._v("\n                " + _vm._s(_vm.verbal(choice.note)) + "\n            ")]) : _vm._e(), _vm._v(" "), (_vm.voteKey && !_vm.alreadyVoted) ? _c('vote-input', {
+      on: {
+        "input": function (v) { return choice.note = v; }
       }
     }) : _vm._e(), _vm._v(" "), (choice.description) ? _c('p', [_vm._v(" " + _vm._s(choice.description) + " ")]) : _vm._e()], 1)
-  }), _vm._v(" "), (_vm.voteKey) ? _c('div', {
+  }), _vm._v(" "), (_vm.voteKey && !_vm.alreadyVoted) ? _c('div', {
     staticClass: "actions"
   }, [(_vm.voted) ? _c('span', [_vm._v("\n                Votre vote a été pris en compte, merci !\n            ")]) : _c('async-button', {
     attrs: {
@@ -15548,7 +15595,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "done": function($event) {
-        this.voted = true
+        _vm.voted = true
       }
     }
   })], 1) : _vm._e()], 2) : _vm._e()], 1)

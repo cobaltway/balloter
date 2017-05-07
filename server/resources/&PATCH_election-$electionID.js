@@ -1,9 +1,12 @@
 const keystone = require('keystone'),
-    Election = keystone.list('Election');
+    Election = keystone.list('Election'),
+    judgment = require('majority-judgment');
 
 module.exports = function({electionID, ongoing}) {
     return new Promise((resolve, reject) => {
         Election.model.findOne({slug: electionID})
+        .populate('votes')
+        .populate('choices')
         .exec((err, election) => {
             if (err || !election) {
                 reject(err || {message: 'No election found with this ID'});
@@ -12,15 +15,47 @@ module.exports = function({electionID, ongoing}) {
 
             election.ongoing = !!ongoing;
 
-            // TODO: calculate note and rating of choices
-
-            election.save((err) => {
-                if (err) {
-                    reject(err);
-                    return;
+            const alternatives = new Map();
+            election.votes.map(v => {
+                let key = String(v.alternative);
+                if (!alternatives.has(key)) {
+                    alternatives.set(key, {
+                        id: key,
+                        votes: []
+                    });
                 }
-                resolve();
+                alternatives.get(key).votes.push(v.note);
             });
+
+            const sortedAlternatives = judgment(Array.from(alternatives.values()));
+
+            Promise.all(election.choices.map((choice) => {
+                return new Promise((resolve, reject) => {
+                    sortedAlternatives.some((alternative) => {
+                        if (choice._id.equals(alternative.id)) {
+                            choice.note = alternative.note;
+                            choice.rank = alternative.rank;
+                            return true;
+                        }
+                    });
+
+                    choice.save((err) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        resolve();
+                    });
+                });
+            })).then(() => {
+                election.save(err => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
+                });
+            }).catch(reject);
         });
     });
 };
