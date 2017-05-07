@@ -14,7 +14,7 @@ keystone.init({
     'cookie secret': config.COOKIE_SECRET,
     mongo: config.MONGO,
     port: 80,
-    host: '127.0.0.1',
+    host: '79.137.36.121',
     'signin redirect': '/',
     'signout redirect': '/'
 });
