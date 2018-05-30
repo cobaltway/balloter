@@ -20,7 +20,7 @@ module.exports = ({ guild, channel, role, election, tokens }) => {
         ].join('\n'));
       }
       catch (e) {
-        console.log('Cannot deliver to', m.name);
+        console.log('Cannot deliver to', m.user.username);
       }
     }, 100);
   });
