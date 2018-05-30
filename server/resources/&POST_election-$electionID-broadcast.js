@@ -1,59 +1,43 @@
-const keystone = require('keystone'),
-    Election = keystone.list('Election'),
-    request = require('request'),
-    generateTokens = require('../libs/utils/generateTokens'),
-    config = require('../config.js'),
-    code = config.APOLLON_TOKEN,
-    basePath = config.BASE_PATH,
-    guildID = config.GUILD_ID,
-    channelID = config.CHANNEL_ID;
+const keystone = require('keystone');
+const Election = keystone.list('Election');
+const getMemberCount = require('../discord/getMemberCount');
+const broadcast = require('../discord/broadcast');
+const generateTokens = require('../libs/utils/generateTokens');
 
-module.exports = function({electionID, ongoing, role = 'test'}) {
-    return new Promise((resolve, reject) => {
-        Election.model.findOne({slug: electionID})
-        .exec((err, election) => {
-            if (err || !election) {
-                reject(err || {message: 'No election found with this ID'});
-                return;
-            }
+module.exports = function ({ electionID, role = 'test' }) {
+  return new Promise((resolve, reject) => {
+    Election.model.findOne({ slug: electionID })
+      .exec(async (err, election) => {
+        if (err || !election) {
+          reject(err || { message: 'No election found with this ID' });
+          return;
+        }
 
-            request.get({
-                url: `http://localhost:3000/balloter/${code}/membersCount/${guildID}/${role}`
-            }, (err, response, body) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-
-                const tokens = generateTokens(Number(body) + 5);
-                election.activeKeys.push(...tokens);
-
-                request.post({
-                    url: `http://localhost:3000/balloter/${code}/broadcast/${guildID}/${channelID}/${role}`,
-                    form: {
-                        basePath,
-                        name: election.name,
-                        slug: election.slug,
-                        tokens: JSON.stringify(tokens)
-                    }
-                }, (err) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-
-                    election.broadcasted = true;
-                    resolve();
-
-                    election.save((err) => {
-                        if (err) {
-                            reject(err);
-                            return;
-                        }
-                        resolve();
-                    });
-                });
-            });
+        const memberCount = await getMemberCount({
+          guild: process.env.GUILD_ID,
+          role
         });
-    });
+
+        const tokens = generateTokens(memberCount + 5); // Generate 5 more for safety
+        election.activeKeys.push(...tokens);
+
+        await broadcast({
+          guild: process.env.GUILD_ID,
+          channel: process.env.CHANNEL_ID,
+          role,
+          election,
+          tokens
+        });
+
+        election.broadcasted = true;
+
+        election.save((err) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve();
+        });
+      });
+  });
 };

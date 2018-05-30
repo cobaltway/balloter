@@ -1,9 +1,11 @@
 <template>
     <div>
+        ⟶
         <label v-for="(_, i) in values">
             <input type="radio" :name="_uid" @change="$emit('input', i)"/>
             <span> {{ verbal(i) }} </span>
         </label>
+        ⟵
     </div>
 </template>
 
@@ -50,6 +52,7 @@
         transition: all 0.3s ease-out;
         box-sizing: border-box;
         font-size: 0.9em;
+        background-color: rgba(255, 255, 255, .5);
     }
 
     input[type=radio] {

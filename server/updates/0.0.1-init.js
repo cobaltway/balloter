@@ -1,12 +1,11 @@
-const keystone = require('keystone'),
-    User = keystone.list('User'),
-    config = require('../config.js');
+const keystone = require('keystone');
+const User = keystone.list('User');
 
-exports = module.exports = function(done) {
-    new User.model({
-        name: config.ADMIN_NAME,
-        email: config.ADMIN_EMAIL,
-        password: config.ADMIN_PASSWORD,
-        canAccessKeystone: true
-    }).save(done);
+exports = module.exports = function (done) {
+  new User.model({
+    name: process.env.ADMIN_NAME,
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+    canAccessKeystone: true
+  }).save(done);
 };

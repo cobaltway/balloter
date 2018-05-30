@@ -20,6 +20,8 @@
                 votant.e<template v-if="voters.length > 1">.s</template>
             </div>
 
+            <h2> Liste des alternatives </h2>
+
             <div class="choice" v-for="(choice, index) in choices">
                 <h5> {{ choice.name }} </h5>
                 <span class="result" v-if="!ongoing">
@@ -29,10 +31,13 @@
                     </div>
                     {{ verbal(choice.note) }}
                 </span>
+                <p v-if="choice.description"> {{ choice.description }} </p>
+                <a v-if="choice.image" class="miniature" target="_blank" :href="choice.image">
+                  <img :src="choice.image"/>
+                </a>
                 <vote-input v-if="voteKey && !alreadyVoted"
                     @input="v => choice.note = v">
                 </vote-input>
-                <p v-if="choice.description"> {{ choice.description }} </p>
             </div>
 
             <div v-if="voteKey && !alreadyVoted" class="actions">
@@ -129,6 +134,10 @@
         min-width: 500px;
     }
 
+    h2 {
+      text-align: center;
+    }
+
     .voters {
         text-align: center;
         font-size: 1.2em;
@@ -151,6 +160,14 @@
 
         p {
             min-height: 60px;
+        }
+
+        a.miniature {
+          img {
+            max-height: 80px;
+            width: auto;
+            border-radius: 2px;
+          }
         }
 
         span {

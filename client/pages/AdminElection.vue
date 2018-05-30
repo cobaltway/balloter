@@ -28,7 +28,7 @@
                     <input type="text" v-model="name" @input="changed = true"/>
                 </label>
                 <label>
-                    Description <em> (markdown autorisé) </em>
+                    Description (facultatif), <em> markdown autorisé </em>
                     <textarea v-model="description" @input="changed = true"></textarea>
                 </label>
 
@@ -43,7 +43,14 @@
                         <input type="text" v-model="choice.name" @input="changed = true"/>
                     </label>
                     <label>
-                        Description <em> (markdown autorisé) </em>
+                        Image (facultatif)
+                        <a class="miniature" target="_blank" :href="choice.image">
+                          <img :src="choice.image"/>
+                        </a>
+                        <input type="url" v-model="choice.image" @input="changed = true"/>
+                    </label>
+                    <label>
+                        Description (facultatif), <em> markdown autorisé </em>
                         <textarea v-model="choice.description" @input="changed = true"></textarea>
                     </label>
                 </div>
@@ -74,88 +81,78 @@
 
 <script>
     module.exports = {
-        props: ['creation', 'isAuth'],
-        components: {
-            PageTitle: require('../components/PageTitle.vue'),
-            AsyncButton: require('../components/AsyncButton.vue'),
-            LoadOrError: require('../components/LoadOrError.vue'),
-            ElectionState: require('../components/ElectionState.vue')
+      props: ['creation', 'isAuth'],
+      components: {
+        PageTitle: require('../components/PageTitle.vue'),
+        AsyncButton: require('../components/AsyncButton.vue'),
+        LoadOrError: require('../components/LoadOrError.vue'),
+        ElectionState: require('../components/ElectionState.vue')
+      },
+      mixins: [require('../mixins/election.js')],
+      computed: {
+        title() {
+          return this.slug ? 'Editer une élection' : 'Créer une élection';
         },
-        mixins: [require('../mixins/election.js')],
-        computed: {
-            title() {
-                if (this.slug) {
-                    return 'Editer une élection';
-                }
-                return 'Créer une élection';
-            },
-            actualChoices() {
-                return this.choices.filter((c) => {
-                    return c.name.slice();
-                });
-            },
-            canBroadcast() {
-                return this.slug && !this.broadcasted && this.ongoing && this.actualChoices.length > 1 && this.name;
-            }
+        actualChoices() {
+          return this.choices.filter(c => c.name.slice());
         },
-        methods: {
-            afterWrite(body) {
-                if (this.slug !== body.slug) {
-                    this.$router.push('/edit/' + body.slug);
-                }
-                else {
-                    this.changed = false;
-                }
-            },
-            saveOrUpdate() {
-                return () => {
-                    if (this.slug) {
-                        return this.update();
-                    }
-                    return this.save();
-                };
-            },
-            save() {
-                return this.$http.post('/api/election/', {
-                    name: this.name,
-                    description: this.description,
-                    choices: this.choices.filter((c) => {
-                        return c.name.slice();
-                    })
-                });
-            },
-            update() {
-                return this.$http.put('/api/election/' + this.slug, {
-                    name: this.name,
-                    description: this.description,
-                    choices: this.actualChoices
-                });
-            },
-            broadcast() {
-                return () => this.$http.post('/api/election/' + this.slug + '/broadcast', {
-                    role: 'MEMBRE'
-                });
-            },
-            close() {
-                return () => this.$http.patch('/api/election/' + this.slug, {
-                    ongoing: false
-                });
-            },
-            deleteElection() {
-                return () => this.$http.delete('/api/election/' + this.slug);
-            },
-            addChoice() {
-                this.changed = true;
-                this.choices.push({
-                    name: '',
-                    description: ''
-                });
-            },
-            deleteChoice(index) {
-                this.changed = true;
-                this.choices.splice(index, 1);
-            }
+        canBroadcast() {
+          return this.slug && !this.broadcasted && this.ongoing && this.actualChoices.length > 1 && this.name;
         }
+      },
+      methods: {
+        afterWrite(body) {
+          if (this.slug !== body.slug) {
+            this.$router.push(`/edit/${body.slug}`);
+          }
+          else {
+            this.changed = false;
+          }
+        },
+        saveOrUpdate() {
+          return () => {
+            if (this.slug) {
+              return this.update();
+            }
+            return this.save();
+          };
+        },
+        save() {
+          return this.$http.post('/api/election/', {
+            name: this.name,
+            description: this.description,
+            choices: this.choices.filter(c => c.name.slice())
+          });
+        },
+        update() {
+          return this.$http.put(`/api/election/${this.slug}`, {
+            name: this.name,
+            description: this.description,
+            choices: this.actualChoices
+          });
+        },
+        broadcast() {
+          return () => this.$http.post(`/api/election/${this.slug}/broadcast`, { role: 'MEMBRE' });
+        },
+        close() {
+          return () => this.$http.patch(`/api/election/${this.slug}`, { ongoing: false });
+        },
+        deleteElection() {
+          return () => this.$http.delete(`/api/election/${this.slug}`);
+        },
+        addChoice() {
+          this.changed = true;
+          this.choices.push({
+            name: '',
+            description: '',
+            image: ''
+          });
+        },
+        deleteChoice(index) {
+          this.changed = true;
+          this.choices.splice(index, 1);
+        }
+      }
     };
 </script>
 
@@ -189,5 +186,14 @@
     div.actions {
         margin-top: 2em;
         margin-bottom: 2em;
+    }
+
+    a.miniature {
+      float: right;
+      img {
+        max-height: 80px;
+        width: auto;
+        border-radius: 2px;
+      }
     }
 </style>
