@@ -10,13 +10,18 @@ module.exports = ({ guild, channel, role, election, tokens }) => {
   guildObject.members.forEach((m) => {
     const link = `${process.env.URL}/election/${election.slug}/${tokens[count++]}`;
 
-    setTimeout(() => {
-      m.send([
-        `Voilà ton lien pour le vote \`${election.name}\` sur ${guildObject.name}.`,
-        'Pour voter, il te suffit de cliquer et de remplir le formulaire.',
-        'Ce lien ne fonctionnera qu\'une seule fois, pour ce vote seulement, et il t\'est personnel, alors veille à ne pas le diffuser.',
-        `➡ ${link}`
-      ].join('\n'));
+    setTimeout(async () => {
+      try {
+        await m.send([
+          `Voilà ton lien pour le vote \`${election.name}\` sur ${guildObject.name}.`,
+          'Pour voter, il te suffit de cliquer et de remplir le formulaire.',
+          'Ce lien ne fonctionnera qu\'une seule fois, pour ce vote seulement, et il t\'est personnel, alors veille à ne pas le diffuser.',
+          `➡ ${link}`
+        ].join('\n'));
+      }
+      catch (e) {
+        console.log('Cannot deliver to', m.name);
+      }
     }, 100);
   });
 
