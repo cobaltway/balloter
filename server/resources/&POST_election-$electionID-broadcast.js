@@ -15,7 +15,7 @@ module.exports = function ({ electionID, role }) {
 
         const memberCount = await getMemberCount({
           guild: process.env.GUILD_ID,
-          role
+          role: undefined
         });
 
         const tokens = generateTokens(memberCount + 5); // Generate 5 more for safety
@@ -24,7 +24,7 @@ module.exports = function ({ electionID, role }) {
         await broadcast({
           guild: process.env.GUILD_ID,
           channel: process.env.CHANNEL_ID,
-          role,
+          role: undefined,
           election,
           tokens
         });
