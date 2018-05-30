@@ -8,6 +8,7 @@ module.exports = ({ guild, channel, role, election, tokens }) => {
   const channelObject = guildObject.channels.get(channel);
 
   guildObject.members.forEach((m) => {
+    if (m.user.bot) return;
     const link = `${process.env.URL}/election/${election.slug}/${tokens[count++]}`;
 
     setTimeout(async () => {
