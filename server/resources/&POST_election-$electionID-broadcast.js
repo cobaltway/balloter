@@ -4,7 +4,7 @@ const getMemberCount = require('../discord/getMemberCount');
 const broadcast = require('../discord/broadcast');
 const generateTokens = require('../libs/utils/generateTokens');
 
-module.exports = function ({ electionID, role = 'test' }) {
+module.exports = function ({ electionID, role }) {
   return new Promise((resolve, reject) => {
     Election.model.findOne({ slug: electionID })
       .exec(async (err, election) => {

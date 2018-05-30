@@ -3,7 +3,8 @@ const client = require('./client');
 module.exports = ({ guild, channel, role, election, tokens }) => {
   let count = 0;
   const guildObject = client.guilds.get(guild);
-  const roleObject = guildObject.roles.find('name', role);
+  let roleObject;
+  if (role) roleObject = guildObject.roles.find('name', role);
   const channelObject = guildObject.channels.get(channel);
 
   guildObject.members.forEach((m) => {
@@ -19,10 +20,10 @@ module.exports = ({ guild, channel, role, election, tokens }) => {
     }, 100);
   });
 
-  channelObject.sendMessage(`
-    Une nouvelle élection a été ouverte.\n
-    \`\`\`${election.name}\`\`\`\n
-    Cette élection est ouverte aux ${roleObject}.\n
-    Vous allez recevoir dans les prochaines minutes une clé en message privé pour y participer.
-  `);
+  channelObject.sendMessage([
+    'Une nouvelle élection a été ouverte.',
+    `\`\`\`${election.name}\`\`\``,
+    roleObject ? `Cette élection est ouverte aux ${roleObject}.` : 'Cette élection est ouverte à tous les membres.',
+    'Vous allez recevoir dans les prochaines minutes une clé en message privé pour y participer.'
+  ].join('\n'));
 };
